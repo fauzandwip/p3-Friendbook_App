@@ -20,6 +20,7 @@ const userTypeDefs = `#graphql
   
   type Query {
     users: [User]
+    user(id: ID): User
   }
 
   type Mutation {
@@ -30,10 +31,14 @@ const userTypeDefs = `#graphql
 const userResolvers = {
 	Query: {
 		users: () => usersData,
+		user: async (_, args, ctx) => {
+			const { id } = args;
+			const user = await User.getUserById(ctx.db, id);
+			return user;
+		},
 	},
 	Mutation: {
 		register: async (_, args, ctx) => {
-			// console.log(args, '>>> args');
 			const { name, username, email, password } = args;
 			const newUser = await User.register(ctx.db, {
 				name,
