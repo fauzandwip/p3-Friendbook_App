@@ -1,6 +1,6 @@
-const { GraphQLError, GraphQLScalarType } = require('graphql');
-const { ObjectId } = require('mongodb');
+const { GraphQLError } = require('graphql');
 const Post = require('../models/post');
+const dateScalar = require('../helpers/dateScalar');
 
 const postTypeDefs = `#graphql
   scalar Date
@@ -47,17 +47,6 @@ const postTypeDefs = `#graphql
   }
 `;
 
-const dateScalar = new GraphQLScalarType({
-	name: 'Date',
-	description: 'Date custom scalar type',
-	serialize(value) {
-		return value.toISOString();
-	},
-	parseValue(value) {
-		return new Date(value);
-	},
-});
-
 const postResolvers = {
 	Date: dateScalar,
 	Query: {
@@ -100,16 +89,11 @@ const postResolvers = {
 				}
 
 				const authorId = user.id;
-				const currentTime = new Date();
 				const newPost = await Post.addPost({
 					content,
 					tags,
 					imgUrl,
 					authorId,
-					comments: [],
-					likes: [],
-					createdAt: currentTime,
-					updatedAt: currentTime,
 				});
 				return newPost;
 			} catch (error) {
