@@ -39,6 +39,7 @@ const postTypeDefs = `#graphql
 
   type Query {
     posts: [Post]
+    post(id: ID): Post
   }
 
   type Mutation {
@@ -64,6 +65,22 @@ const postResolvers = {
 			try {
 				const posts = await Post.getAllPost();
 				return posts;
+			} catch (error) {
+				throw error;
+			}
+		},
+		post: async (_, args) => {
+			try {
+				const { id } = args;
+				const post = await Post.getPostById(id);
+
+				if (!post) {
+					throw new GraphQLError('Post not found', {
+						extensions: { code: 'NOT_FOUND' },
+					});
+				}
+
+				return post;
 			} catch (error) {
 				throw error;
 			}

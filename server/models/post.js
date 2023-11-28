@@ -1,4 +1,5 @@
 const { getDB } = require('../config/mongo');
+const { ObjectId } = require('mongodb');
 class Post {
 	static async addPost(post) {
 		const posts = getDB().collection('posts');
@@ -12,6 +13,12 @@ class Post {
 			.collection('posts')
 			.aggregate([{ $sort: { createdAt: -1 } }])
 			.toArray();
+	}
+
+	static async getPostById(id) {
+		return getDB()
+			.collection('posts')
+			.findOne({ _id: new ObjectId(id) });
 	}
 }
 
