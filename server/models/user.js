@@ -12,6 +12,12 @@ class User {
 		return newUser;
 	}
 
+	static async getUserById(id) {
+		return await getDB()
+			.collection('users')
+			.findOne({ _id: new ObjectId(id) });
+	}
+
 	static async getUserByEmailOrUsername(email, username) {
 		return await getDB()
 			.collection('users')
@@ -20,10 +26,16 @@ class User {
 			});
 	}
 
-	static async getUserById(id) {
+	static async getUsersByNameOrUsername(name) {
 		return await getDB()
 			.collection('users')
-			.findOne({ _id: new ObjectId(id) });
+			.find({
+				$or: [
+					{ name: { $regex: name, $options: 'i' } },
+					{ username: { $regex: name, $options: 'i' } },
+				],
+			})
+			.toArray();
 	}
 }
 

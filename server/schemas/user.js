@@ -35,6 +35,7 @@ const userTypeDefs = `#graphql
   type Query {
     users: [User]
     user(id: ID): User
+    usersByName(name: String!): [User]
   }
 
   type Mutation {
@@ -63,6 +64,19 @@ const userResolvers = {
 				}
 
 				return user;
+			} catch (error) {
+				throw error;
+			}
+		},
+		usersByName: async (_, args) => {
+			try {
+				const { name } = args;
+				if (!name) {
+					return [];
+				}
+
+				const users = await User.getUsersByNameOrUsername(name);
+				return users;
 			} catch (error) {
 				throw error;
 			}
