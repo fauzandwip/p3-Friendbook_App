@@ -4,12 +4,12 @@ if (process.env.NODE_ENV !== 'production') {
 
 const { ApolloServer } = require('@apollo/server');
 const { startStandaloneServer } = require('@apollo/server/standalone');
-const { userTypeDefs, userResolvers } = require('./schemas/user');
+const { typeDefs, resolvers } = require('./schemas');
 const { connect } = require('./config/mongo');
 
 const server = new ApolloServer({
-	typeDefs: [userTypeDefs],
-	resolvers: [userResolvers],
+	typeDefs,
+	resolvers,
 });
 
 connect()

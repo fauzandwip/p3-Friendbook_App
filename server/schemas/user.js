@@ -2,15 +2,6 @@ const { GraphQLError } = require('graphql');
 const { hashPassword, comparePassword } = require('../helpers/bcrypt');
 const User = require('../models/user');
 const { signToken } = require('../helpers/jwt');
-const usersData = [
-	{
-		_id: 1,
-		name: 'Jack Sparrow',
-		username: 'jack',
-		email: 'jack@gmail.com',
-		password: '12345',
-	},
-];
 
 const userTypeDefs = `#graphql
   type User {
@@ -46,7 +37,6 @@ const userTypeDefs = `#graphql
 
 const userResolvers = {
 	Query: {
-		users: () => usersData,
 		user: async (_, args) => {
 			try {
 				const { id } = args;
