@@ -2,8 +2,15 @@ const { getDB } = require('../config/mongo');
 const { ObjectId } = require('mongodb');
 class Post {
 	static async addPost(post) {
+		const currentTime = new Date();
 		const posts = getDB().collection('posts');
-		const response = await posts.insertOne(post);
+		const response = await posts.insertOne({
+			...post,
+			comments: [],
+			likes: [],
+			createdAt: currentTime,
+			updatedAt: currentTime,
+		});
 		const newPost = await posts.findOne({ _id: response.insertedId });
 		return newPost;
 	}
