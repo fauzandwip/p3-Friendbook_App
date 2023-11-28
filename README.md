@@ -10,7 +10,7 @@ My Social Media App adalah sebuah aplikasi client(mobile)-server. Challenge ini 
 
 ### Struktur Folder
 
-- [ ] server: untuk menyimpan aplikasi server GraphQL kamu
+- [x] server: untuk menyimpan aplikasi server GraphQL kamu
 - [ ] app: untuk menyimpan aplikasi mobile React Native kamu
 
 ### Fitur
