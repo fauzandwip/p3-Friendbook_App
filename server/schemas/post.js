@@ -61,16 +61,18 @@ const dateScalar = new GraphQLScalarType({
 const postResolvers = {
 	Date: dateScalar,
 	Query: {
-		posts: async () => {
+		posts: async (_, __, ctx) => {
 			try {
+				await ctx.authentication();
 				const posts = await Post.getAllPost();
 				return posts;
 			} catch (error) {
 				throw error;
 			}
 		},
-		post: async (_, args) => {
+		post: async (_, args, ctx) => {
 			try {
+				await ctx.authentication();
 				const { id } = args;
 				const post = await Post.getPostById(id);
 
@@ -87,8 +89,9 @@ const postResolvers = {
 		},
 	},
 	Mutation: {
-		addPost: async (_, args) => {
+		addPost: async (_, args, ctx) => {
 			try {
+				const user = await ctx.authentication();
 				const { content, tags, imgUrl } = args.post;
 				if (!content) {
 					throw new GraphQLError('Content is required', {
@@ -96,7 +99,7 @@ const postResolvers = {
 					});
 				}
 
-				const authorId = new ObjectId('6565c48a2e6e47d2a7f730b0');
+				const authorId = user.id;
 				const currentTime = new Date();
 				const newPost = await Post.addPost({
 					content,
