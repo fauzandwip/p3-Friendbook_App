@@ -6,6 +6,13 @@ class Post {
 		const newPost = await posts.findOne({ _id: response.insertedId });
 		return newPost;
 	}
+
+	static async getAllPost() {
+		return getDB()
+			.collection('posts')
+			.aggregate([{ $sort: { createdAt: -1 } }])
+			.toArray();
+	}
 }
 
 module.exports = Post;

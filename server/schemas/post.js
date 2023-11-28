@@ -37,6 +37,10 @@ const postTypeDefs = `#graphql
     imgUrl: String
   }
 
+  type Query {
+    posts: [Post]
+  }
+
   type Mutation {
     addPost(post: NewPost): Post
   }
@@ -55,6 +59,16 @@ const dateScalar = new GraphQLScalarType({
 
 const postResolvers = {
 	Date: dateScalar,
+	Query: {
+		posts: async () => {
+			try {
+				const posts = await Post.getAllPost();
+				return posts;
+			} catch (error) {
+				throw error;
+			}
+		},
+	},
 	Mutation: {
 		addPost: async (_, args) => {
 			try {
