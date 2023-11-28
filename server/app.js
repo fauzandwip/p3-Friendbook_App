@@ -1,33 +1,23 @@
-const { ApolloServer } = require('@apollo/server');
-const { startStandaloneServer } = require('@apollo/server/standalone');
-const { userTypeDefs, userResolvers } = require('./schemas/user');
-
 if (process.env.NODE_ENV !== 'production') {
 	require('dotenv').config();
 }
 
-const { connect } = require('./helpers/mongo');
+const { ApolloServer } = require('@apollo/server');
+const { startStandaloneServer } = require('@apollo/server/standalone');
+const { userTypeDefs, userResolvers } = require('./schemas/user');
+const { connect } = require('./config/mongo');
 
 const server = new ApolloServer({
 	typeDefs: [userTypeDefs],
 	resolvers: [userResolvers],
 });
 
-const run = async () => {
-	try {
-		const db = await connect();
-		const { url } = await startStandaloneServer(server, {
+connect()
+	.then(() => {
+		return startStandaloneServer(server, {
 			listen: { port: 3000 },
-			context: async () => {
-				return {
-					db,
-				};
-			},
 		});
+	})
+	.then(({ url }) => {
 		console.log(`🚀  Server ready at: ${url}`);
-	} catch (error) {
-		console.log(error);
-	}
-};
-
-run();
+	});
