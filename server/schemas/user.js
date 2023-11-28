@@ -2,15 +2,6 @@ const { GraphQLError } = require('graphql');
 const { hashPassword, comparePassword } = require('../helpers/bcrypt');
 const User = require('../models/user');
 const { signToken } = require('../helpers/jwt');
-const usersData = [
-	{
-		_id: 1,
-		name: 'Jack Sparrow',
-		username: 'jack',
-		email: 'jack@gmail.com',
-		password: '12345',
-	},
-];
 
 const userTypeDefs = `#graphql
   type User {
@@ -46,9 +37,10 @@ const userTypeDefs = `#graphql
 
 const userResolvers = {
 	Query: {
-		users: () => usersData,
-		user: async (_, args) => {
+		user: async (_, args, ctx) => {
 			try {
+				// * current id or args id here
+				const currentUser = await ctx.authentication();
 				const { id } = args;
 				if (!id) {
 					throw new GraphQLError('User not found', {
@@ -68,8 +60,9 @@ const userResolvers = {
 				throw error;
 			}
 		},
-		usersByName: async (_, args) => {
+		usersByName: async (_, args, ctx) => {
 			try {
+				await ctx.authentication();
 				const { name } = args;
 				if (!name) {
 					return [];
