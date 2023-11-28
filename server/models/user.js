@@ -1,8 +1,5 @@
-const { GraphQLError } = require('graphql');
 const { ObjectId } = require('mongodb');
 const { getDB } = require('../config/mongo');
-const { comparePassword, hashPassword } = require('../helpers/bcrypt');
-const { signToken } = require('../helpers/jwt');
 
 class User {
 	static async addUser(user) {
