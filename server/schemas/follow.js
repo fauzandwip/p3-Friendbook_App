@@ -25,9 +25,9 @@ const followResolvers = {
 			try {
 				const currentUser = await ctx.authentication();
 				const { userId } = args;
-				const isFollow = await Follow.getFollow(userId, currentUser.id);
+				const isFollowed = await Follow.getFollow(userId, currentUser.id);
 
-				if (isFollow) {
+				if (isFollowed) {
 					throw new GraphQLError('You have followed', {
 						extensions: { code: 'BAD_USER_INPUT' },
 					});
