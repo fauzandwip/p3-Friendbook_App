@@ -9,7 +9,6 @@ const userTypeDefs = `#graphql
     name: String
     username: String
     email: String
-    password: String
   }
 
   input NewUser {
@@ -24,8 +23,7 @@ const userTypeDefs = `#graphql
   }
   
   type Query {
-    users: [User]
-    user(id: ID): User
+    user: User
     usersByName(name: String!): [User]
   }
 
@@ -37,25 +35,13 @@ const userTypeDefs = `#graphql
 
 const userResolvers = {
 	Query: {
-		user: async (_, args, ctx) => {
+		user: async (_, __, ctx) => {
 			try {
-				// * current id or args id here
-				const currentUser = await ctx.authentication();
-				const { id } = args;
-				if (!id) {
-					throw new GraphQLError('User not found', {
-						extensions: { code: 'NOT_FOUND' },
-					});
-				}
-
-				const user = await User.getUserById(id);
-				if (!user) {
-					throw new GraphQLError('User not found', {
-						extensions: { code: 'NOT_FOUND' },
-					});
-				}
-
-				return user;
+				const user = await ctx.authentication();
+				return {
+					...user,
+					_id: user.id,
+				};
 			} catch (error) {
 				throw error;
 			}

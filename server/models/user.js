@@ -26,12 +26,17 @@ class User {
 	static async getUsersByNameOrUsername(name) {
 		return await getDB()
 			.collection('users')
-			.find({
-				$or: [
-					{ name: { $regex: name, $options: 'i' } },
-					{ username: { $regex: name, $options: 'i' } },
-				],
-			})
+			.find(
+				{
+					$or: [
+						{ name: { $regex: name, $options: 'i' } },
+						{ username: { $regex: name, $options: 'i' } },
+					],
+				},
+				{
+					password: 0,
+				}
+			)
 			.toArray();
 	}
 }
