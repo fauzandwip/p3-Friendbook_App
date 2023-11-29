@@ -45,6 +45,7 @@ const postTypeDefs = `#graphql
   type Mutation {
     addPost(post: NewPost): Post
     addComment(postId: ID!, comment: String!): String
+    addLike(postId: ID!): String
   }
 `;
 
@@ -130,6 +131,37 @@ const postResolvers = {
 				}
 
 				return 'Failed to add comment';
+			} catch (error) {
+				throw error;
+			}
+		},
+		addLike: async (_, args, ctx) => {
+			try {
+				const user = await ctx.authentication();
+				const { postId } = args;
+				const post = await Post.getPostById(postId);
+
+				if (!post) {
+					throw new GraphQLError('Post not found', {
+						extensions: { code: 'NOT_FOUND' },
+					});
+				}
+
+				const isLiked = await Post.getLike(postId, user.id);
+
+				if (isLiked) {
+					throw new GraphQLError('You have liked', {
+						extensions: { code: 'BAD_USER_INPUT' },
+					});
+				}
+
+				const { matchedCount } = await Post.addLike(postId, user.id);
+
+				if (matchedCount) {
+					return 'Success to like post';
+				}
+
+				return 'Failed to like post';
 			} catch (error) {
 				throw error;
 			}

@@ -46,6 +46,43 @@ class Post {
 				}
 			);
 	}
+
+	static async addLike(postId, authorId) {
+		const currentTime = new Date();
+		return await getDB()
+			.collection('posts')
+			.updateOne(
+				{ _id: new ObjectId(postId) },
+				{
+					$push: {
+						likes: {
+							authorId,
+							createdAt: currentTime,
+							updatedAt: currentTime,
+						},
+					},
+				}
+			);
+	}
+
+	static async getLikes(postId) {
+		const post = await getDB()
+			.collection('posts')
+			.findOne({
+				_id: new ObjectId(postId),
+			});
+
+		return post.likes;
+	}
+
+	static async getLike(postId, authorId) {
+		const likes = await this.getLikes(postId);
+		const like = await likes.find(
+			(el) => el.authorId.toString() === authorId.toString()
+		);
+
+		return like;
+	}
 }
 
 module.exports = Post;
