@@ -26,14 +26,8 @@ class Post {
 		const arrPost = await getDB()
 			.collection('posts')
 			.aggregate([
-				{
-					$match: { _id: new ObjectId(id) },
-				},
-				{
-					$unwind: {
-						path: '$comments',
-					},
-				},
+				{ $match: { _id: new ObjectId(id) } },
+				{ $unwind: '$comments' },
 				{
 					$lookup: {
 						from: 'users',
@@ -51,7 +45,6 @@ class Post {
 									user: {
 										name: '$$ROOT.name',
 										username: '$$ROOT.username',
-										email: '$$ROOT.email',
 									},
 								},
 							},
@@ -75,6 +68,53 @@ class Post {
 							$push: { $first: '$comments' },
 						},
 						likes: { $first: '$likes' },
+						createdAt: { $first: '$createdAt' },
+						updatedAt: { $first: '$updatedAt' },
+					},
+				},
+				{ $unwind: '$likes' },
+				{
+					$lookup: {
+						from: 'users',
+						foreignField: '_id',
+						localField: 'likes.authorId',
+						let: {
+							likeAuthorId: '$likes.authorId',
+							likes: '$likes',
+						},
+						pipeline: [
+							{ $match: { $expr: { $eq: ['$_id', '$$likeAuthorId'] } } },
+							{
+								$project: {
+									_id: 0,
+									user: {
+										name: '$$ROOT.name',
+										username: '$$ROOT.username',
+									},
+								},
+							},
+							{
+								$replaceRoot: {
+									newRoot: { $mergeObjects: ['$$likes', '$$ROOT'] },
+								},
+							},
+						],
+						as: 'likes',
+					},
+				},
+				{
+					$group: {
+						_id: '$_id',
+						content: { $first: '$content' },
+						tags: { $first: '$tags' },
+						imgUrl: { $first: '$imgUrl' },
+						authorId: { $first: '$authorId' },
+						comments: {
+							$first: '$comments',
+						},
+						likes: {
+							$push: { $first: '$likes' },
+						},
 						createdAt: { $first: '$createdAt' },
 						updatedAt: { $first: '$updatedAt' },
 					},

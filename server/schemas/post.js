@@ -38,7 +38,7 @@ const postTypeDefs = `#graphql
     imgUrl: String
     authorId: ID
     comments: [CommentDetail]
-    likes: [Like]
+    likes: [LikeDetail]
     createdAt: Date
     updatedAt: Date
   }
@@ -48,13 +48,19 @@ const postTypeDefs = `#graphql
     authorId: ID!
     createdAt: Date
     updatedAt: Date
-    user: UserDetail
+    user: UserInformation
   }
 
-  type UserDetail {
+  type LikeDetail {
+    authorId: ID!
+    createdAt: Date
+    updatedAt: Date
+    user: UserInformation
+  }
+
+  type UserInformation {
     name: String
     username: String
-    email: String
   }
 
   input NewPost {

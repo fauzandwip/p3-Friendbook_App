@@ -11,6 +11,15 @@ const userTypeDefs = `#graphql
     email: String
   }
 
+  # type UserDetail {
+  #   _id: ID
+  #   name: String
+  #   username: String
+  #   email: String
+  #   following: [User]
+  #   follower: [User]
+  # }
+
   input NewUser {
     name: String
     username: String!
