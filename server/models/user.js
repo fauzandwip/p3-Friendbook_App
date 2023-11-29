@@ -1,8 +1,5 @@
-const { GraphQLError } = require('graphql');
 const { ObjectId } = require('mongodb');
 const { getDB } = require('../config/mongo');
-const { comparePassword, hashPassword } = require('../helpers/bcrypt');
-const { signToken } = require('../helpers/jwt');
 
 class User {
 	static async addUser(user) {
@@ -29,12 +26,17 @@ class User {
 	static async getUsersByNameOrUsername(name) {
 		return await getDB()
 			.collection('users')
-			.find({
-				$or: [
-					{ name: { $regex: name, $options: 'i' } },
-					{ username: { $regex: name, $options: 'i' } },
-				],
-			})
+			.find(
+				{
+					$or: [
+						{ name: { $regex: name, $options: 'i' } },
+						{ username: { $regex: name, $options: 'i' } },
+					],
+				},
+				{
+					password: 0,
+				}
+			)
 			.toArray();
 	}
 }

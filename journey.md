@@ -17,13 +17,13 @@ Buatlah Aplikasi server GraphQL dengan menggunakan Apollo Server yang memiliki f
 
 - [x] Register (Mutation)
 - [x] Login (Query)
-- [ ] Get Post (Query)
-- [ ] Add Post (Mutation)
-- [ ] Comment Post (Mutation)
+- [x] Get Post (Query)
+- [x] Add Post (Mutation)
+- [x] Comment Post (Mutation)
 - [x] Search User (Query)
-- [ ] Follow (Mutation)
+- [x] Follow (Mutation)
 - [x] Get User (Query)
-- [ ] Like Post (Mutation)
+- [x] Like Post (Mutation)
 
 ### MongoDB 1
 
@@ -32,13 +32,13 @@ Buatlah fungsi/method pada aplikasi server GraphQL kamu yang menghubungkan denga
 - [x] Add user: untuk kebutuhan register
 - [x] Get user by username dan password: untuk kebutuhan login
 - [x] Search users by name/username: untuk kebutuhan mencari user berdasarkan nama atau username
-- [ ] Follow User: untuk kebutuhan memfollow user
+- [x] Follow User: untuk kebutuhan memfollow user
 - [x] Get User by Id: untuk menampilkan profile user
-- [ ] Add Post: untuk menambahkan post baru
-- [ ] Get Posts: mengambil daftar post berdasarkan yang terbaru
-- [ ] Get Post by Id: mengambil post berdasarkan id
-- [ ] Comment Post: untuk menambahkan komentar pada post
-- [ ] Like Post: untuk menambahkan like pada post
+- [x] Add Post: untuk menambahkan post baru
+- [x] Get Posts: mengambil daftar post berdasarkan yang terbaru
+- [x] Get Post by Id: mengambil post berdasarkan id
+- [x] Comment Post: untuk menambahkan komentar pada post
+- [x] Like Post: untuk menambahkan like pada post
 
 ## Day 2
 
@@ -46,9 +46,9 @@ Buatlah fungsi/method pada aplikasi server GraphQL kamu yang menghubungkan denga
 
 Buatlah lookup/relasi pada method/fungsi yang berhubungan dengan MongoDB yang sudah kamu buat dengan rincian sebagai berikut:
 
-- [ ] Get Post by Id: mengambil post berdasarkan id
+- [x] Get Post by Id: mengambil post berdasarkan id
 
-  - [ ] Menampilkan nama/username user pada data komentar
+  - [x] Menampilkan nama/username user pada data komentar
 
 - [ ] Get User by Id: untuk menampilkan profile user
   - [ ] Menampilkan list nama/username user follower

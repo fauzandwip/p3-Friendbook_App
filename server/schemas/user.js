@@ -2,15 +2,6 @@ const { GraphQLError } = require('graphql');
 const { hashPassword, comparePassword } = require('../helpers/bcrypt');
 const User = require('../models/user');
 const { signToken } = require('../helpers/jwt');
-const usersData = [
-	{
-		_id: 1,
-		name: 'Jack Sparrow',
-		username: 'jack',
-		email: 'jack@gmail.com',
-		password: '12345',
-	},
-];
 
 const userTypeDefs = `#graphql
   type User {
@@ -18,8 +9,16 @@ const userTypeDefs = `#graphql
     name: String
     username: String
     email: String
-    password: String
   }
+
+  # type UserDetail {
+  #   _id: ID
+  #   name: String
+  #   username: String
+  #   email: String
+  #   following: [User]
+  #   follower: [User]
+  # }
 
   input NewUser {
     name: String
@@ -33,8 +32,7 @@ const userTypeDefs = `#graphql
   }
   
   type Query {
-    users: [User]
-    user(id: ID): User
+    user: User
     usersByName(name: String!): [User]
   }
 
@@ -46,30 +44,20 @@ const userTypeDefs = `#graphql
 
 const userResolvers = {
 	Query: {
-		users: () => usersData,
-		user: async (_, args) => {
+		user: async (_, __, ctx) => {
 			try {
-				const { id } = args;
-				if (!id) {
-					throw new GraphQLError('User not found', {
-						extensions: { code: 'NOT_FOUND' },
-					});
-				}
-
-				const user = await User.getUserById(id);
-				if (!user) {
-					throw new GraphQLError('User not found', {
-						extensions: { code: 'NOT_FOUND' },
-					});
-				}
-
-				return user;
+				const user = await ctx.authentication();
+				return {
+					...user,
+					_id: user.id,
+				};
 			} catch (error) {
 				throw error;
 			}
 		},
-		usersByName: async (_, args) => {
+		usersByName: async (_, args, ctx) => {
 			try {
+				await ctx.authentication();
 				const { name } = args;
 				if (!name) {
 					return [];

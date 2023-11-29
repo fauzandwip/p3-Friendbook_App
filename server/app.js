@@ -4,18 +4,24 @@ if (process.env.NODE_ENV !== 'production') {
 
 const { ApolloServer } = require('@apollo/server');
 const { startStandaloneServer } = require('@apollo/server/standalone');
-const { userTypeDefs, userResolvers } = require('./schemas/user');
+const { typeDefs, resolvers } = require('./schemas');
 const { connect } = require('./config/mongo');
+const authentication = require('./middlewares/authentication');
 
 const server = new ApolloServer({
-	typeDefs: [userTypeDefs],
-	resolvers: [userResolvers],
+	typeDefs,
+	resolvers,
 });
 
 connect()
 	.then(() => {
 		return startStandaloneServer(server, {
 			listen: { port: 3000 },
+			context: async ({ req }) => {
+				return {
+					authentication: () => authentication(req),
+				};
+			},
 		});
 	})
 	.then(({ url }) => {
