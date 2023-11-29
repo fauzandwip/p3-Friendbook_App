@@ -46,9 +46,9 @@ Buatlah fungsi/method pada aplikasi server GraphQL kamu yang menghubungkan denga
 
 Buatlah lookup/relasi pada method/fungsi yang berhubungan dengan MongoDB yang sudah kamu buat dengan rincian sebagai berikut:
 
-- [ ] Get Post by Id: mengambil post berdasarkan id
+- [x] Get Post by Id: mengambil post berdasarkan id
 
-  - [ ] Menampilkan nama/username user pada data komentar
+  - [x] Menampilkan nama/username user pada data komentar
 
 - [ ] Get User by Id: untuk menampilkan profile user
   - [ ] Menampilkan list nama/username user follower

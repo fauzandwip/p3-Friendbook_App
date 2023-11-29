@@ -30,6 +30,32 @@ const postTypeDefs = `#graphql
     updatedAt: Date
   }
 
+  # post with comments include user
+   type PostDetail {
+    _id: ID
+    content: String
+    tags: [String]
+    imgUrl: String
+    authorId: ID
+    comments: [CommentDetail]
+    likes: [Like]
+    createdAt: Date
+    updatedAt: Date
+  }
+
+  type CommentDetail {
+    content: String!
+    authorId: ID!
+    createdAt: Date
+    updatedAt: Date
+    user: UserDetail
+  }
+
+  type UserDetail {
+    name: String
+    username: String
+    email: String
+  }
 
   input NewPost {
     content: String!
@@ -39,7 +65,7 @@ const postTypeDefs = `#graphql
 
   type Query {
     posts: [Post]
-    post(id: ID!): Post
+    post(id: ID!): PostDetail
   }
 
   type Mutation {
@@ -66,7 +92,7 @@ const postResolvers = {
 				await ctx.authentication();
 				const { id } = args;
 				const post = await Post.getPostById(id);
-
+				// console.dir(post, { depth: null });
 				if (!post) {
 					throw new GraphQLError('Post not found', {
 						extensions: { code: 'NOT_FOUND' },

@@ -23,9 +23,67 @@ class Post {
 	}
 
 	static async getPostById(id) {
-		return await getDB()
+		const arrPost = await getDB()
 			.collection('posts')
-			.findOne({ _id: new ObjectId(id) });
+			.aggregate([
+				{
+					$match: { _id: new ObjectId(id) },
+				},
+				{
+					$unwind: {
+						path: '$comments',
+					},
+				},
+				{
+					$lookup: {
+						from: 'users',
+						foreignField: '_id',
+						localField: 'comments.authorId',
+						let: {
+							cAuthorId: '$comments.authorId',
+							comments: '$comments',
+						},
+						pipeline: [
+							{ $match: { $expr: { $eq: ['$_id', '$$cAuthorId'] } } },
+							{
+								$project: {
+									_id: 0,
+									user: {
+										name: '$$ROOT.name',
+										username: '$$ROOT.username',
+										email: '$$ROOT.email',
+									},
+								},
+							},
+							{
+								$replaceRoot: {
+									newRoot: { $mergeObjects: ['$$comments', '$$ROOT'] },
+								},
+							},
+						],
+						as: 'comments',
+					},
+				},
+				{
+					$group: {
+						_id: '$_id',
+						content: { $first: '$content' },
+						tags: { $first: '$tags' },
+						imgUrl: { $first: '$imgUrl' },
+						authorId: { $first: '$authorId' },
+						comments: {
+							$push: { $first: '$comments' },
+						},
+						likes: { $first: '$likes' },
+						createdAt: { $first: '$createdAt' },
+						updatedAt: { $first: '$updatedAt' },
+					},
+				},
+			])
+			.toArray();
+
+		const post = arrPost[0];
+		return post;
 	}
 
 	static async addComment(postId, comment, authorId) {
@@ -37,7 +95,7 @@ class Post {
 				{
 					$push: {
 						comments: {
-							contents: comment,
+							content: comment,
 							authorId,
 							createdAt: currentTime,
 							updatedAt: currentTime,
