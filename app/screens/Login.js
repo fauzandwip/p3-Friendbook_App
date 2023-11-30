@@ -1,6 +1,6 @@
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import styles from '../styles';
-import Input from '../components/input/Input';
+import Input from '../components/Input';
 
 const Login = ({ navigation }) => {
 	return (
@@ -16,7 +16,6 @@ const Login = ({ navigation }) => {
 					justifyContent: 'center',
 					alignItems: 'center',
 					width: '80%',
-					// backgroundColor: 'red',
 				}}
 			>
 				<Text
