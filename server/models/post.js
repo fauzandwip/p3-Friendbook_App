@@ -16,16 +16,170 @@ class Post {
 	}
 
 	static async getAllPost() {
-		return getDB()
+		return await getDB()
 			.collection('posts')
 			.aggregate([{ $sort: { createdAt: -1 } }])
 			.toArray();
 	}
 
 	static async getPostById(id) {
-		return getDB()
+		const arrPost = await getDB()
 			.collection('posts')
-			.findOne({ _id: new ObjectId(id) });
+			.aggregate([
+				{ $match: { _id: new ObjectId(id) } },
+				{ $unwind: '$comments' },
+				{
+					$lookup: {
+						from: 'users',
+						foreignField: '_id',
+						localField: 'comments.authorId',
+						let: {
+							cAuthorId: '$comments.authorId',
+							comments: '$comments',
+						},
+						pipeline: [
+							{ $match: { $expr: { $eq: ['$_id', '$$cAuthorId'] } } },
+							{
+								$project: {
+									_id: 0,
+									user: {
+										name: '$$ROOT.name',
+										username: '$$ROOT.username',
+									},
+								},
+							},
+							{
+								$replaceRoot: {
+									newRoot: { $mergeObjects: ['$$comments', '$$ROOT'] },
+								},
+							},
+						],
+						as: 'comments',
+					},
+				},
+				{
+					$group: {
+						_id: '$_id',
+						content: { $first: '$content' },
+						tags: { $first: '$tags' },
+						imgUrl: { $first: '$imgUrl' },
+						authorId: { $first: '$authorId' },
+						comments: {
+							$push: { $first: '$comments' },
+						},
+						likes: { $first: '$likes' },
+						createdAt: { $first: '$createdAt' },
+						updatedAt: { $first: '$updatedAt' },
+					},
+				},
+				{ $unwind: '$likes' },
+				{
+					$lookup: {
+						from: 'users',
+						foreignField: '_id',
+						localField: 'likes.authorId',
+						let: {
+							likeAuthorId: '$likes.authorId',
+							likes: '$likes',
+						},
+						pipeline: [
+							{ $match: { $expr: { $eq: ['$_id', '$$likeAuthorId'] } } },
+							{
+								$project: {
+									_id: 0,
+									user: {
+										name: '$$ROOT.name',
+										username: '$$ROOT.username',
+									},
+								},
+							},
+							{
+								$replaceRoot: {
+									newRoot: { $mergeObjects: ['$$likes', '$$ROOT'] },
+								},
+							},
+						],
+						as: 'likes',
+					},
+				},
+				{
+					$group: {
+						_id: '$_id',
+						content: { $first: '$content' },
+						tags: { $first: '$tags' },
+						imgUrl: { $first: '$imgUrl' },
+						authorId: { $first: '$authorId' },
+						comments: {
+							$first: '$comments',
+						},
+						likes: {
+							$push: { $first: '$likes' },
+						},
+						createdAt: { $first: '$createdAt' },
+						updatedAt: { $first: '$updatedAt' },
+					},
+				},
+			])
+			.toArray();
+
+		const post = arrPost[0];
+		return post;
+	}
+
+	static async addComment(postId, comment, authorId) {
+		const currentTime = new Date();
+		return await getDB()
+			.collection('posts')
+			.updateOne(
+				{ _id: new ObjectId(postId) },
+				{
+					$push: {
+						comments: {
+							content: comment,
+							authorId,
+							createdAt: currentTime,
+							updatedAt: currentTime,
+						},
+					},
+				}
+			);
+	}
+
+	static async addLike(postId, authorId) {
+		const currentTime = new Date();
+		return await getDB()
+			.collection('posts')
+			.updateOne(
+				{ _id: new ObjectId(postId) },
+				{
+					$push: {
+						likes: {
+							authorId,
+							createdAt: currentTime,
+							updatedAt: currentTime,
+						},
+					},
+				}
+			);
+	}
+
+	static async getLikes(postId) {
+		const post = await getDB()
+			.collection('posts')
+			.findOne({
+				_id: new ObjectId(postId),
+			});
+
+		return post.likes;
+	}
+
+	static async getLike(postId, authorId) {
+		const likes = await this.getLikes(postId);
+		const like = await likes.find(
+			(el) => el.authorId.toString() === authorId.toString()
+		);
+
+		return like;
 	}
 }
 
