@@ -1,6 +1,7 @@
 const { GraphQLError } = require('graphql');
 const Post = require('../models/post');
 const dateScalar = require('../helpers/dateScalar');
+const redis = require('../config/redis');
 
 const postTypeDefs = `#graphql
   scalar Date
@@ -87,7 +88,17 @@ const postResolvers = {
 		posts: async (_, __, ctx) => {
 			try {
 				await ctx.authentication();
+				const postsCache = await redis.get('post:all');
+
+				if (postsCache) {
+					console.log('from redis');
+					return JSON.parse(postsCache);
+				}
+
 				const posts = await Post.getAllPost();
+				await redis.set('post:all', JSON.stringify(posts));
+				console.log('from mongodb');
+
 				return posts;
 			} catch (error) {
 				throw error;
@@ -129,6 +140,9 @@ const postResolvers = {
 					imgUrl,
 					authorId,
 				});
+				await redis.del('post:all');
+				console.log('invalidate cache');
+
 				return newPost;
 			} catch (error) {
 				throw error;
