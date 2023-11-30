@@ -10,9 +10,112 @@ class User {
 	}
 
 	static async getUserById(id) {
-		return await getDB()
+		const arrUser = await getDB()
 			.collection('users')
-			.findOne({ _id: new ObjectId(id) });
+			.aggregate([
+				{ $match: { _id: new ObjectId(id) } },
+				{
+					$lookup: {
+						from: 'follows',
+						foreignField: 'followerId',
+						localField: '_id',
+						as: 'following',
+					},
+				},
+				{ $unwind: '$following' },
+				{
+					$lookup: {
+						from: 'users',
+						foreignField: '_id',
+						localField: 'following.followingId',
+						let: {
+							followingId: '$following.followingId',
+							following: '$following',
+						},
+						pipeline: [
+							{ $match: { $expr: { $eq: ['$_id', '$$followingId'] } } },
+							{
+								$project: {
+									_id: 0,
+									user: {
+										name: '$$ROOT.name',
+										username: '$$ROOT.username',
+									},
+								},
+							},
+							{
+								$replaceRoot: {
+									newRoot: { $mergeObjects: ['$$following', '$$ROOT'] },
+								},
+							},
+						],
+						as: 'following',
+					},
+				},
+				{
+					$group: {
+						_id: '$_id',
+						name: { $first: '$name' },
+						username: { $first: '$username' },
+						email: { $first: '$email' },
+						following: {
+							$push: { $first: '$following' },
+						},
+					},
+				},
+				{
+					$lookup: {
+						from: 'follows',
+						foreignField: 'followingId',
+						localField: '_id',
+						as: 'followers',
+					},
+				},
+				{ $unwind: '$followers' },
+				{
+					$lookup: {
+						from: 'users',
+						foreignField: '_id',
+						localField: 'followers.followerId',
+						let: {
+							followerId: '$followers.followerId',
+							followers: '$followers',
+						},
+						pipeline: [
+							{ $match: { $expr: { $eq: ['$_id', '$$followerId'] } } },
+							{
+								$project: {
+									_id: 0,
+									user: {
+										name: '$$ROOT.name',
+										username: '$$ROOT.username',
+									},
+								},
+							},
+							{
+								$replaceRoot: {
+									newRoot: { $mergeObjects: ['$$followers', '$$ROOT'] },
+								},
+							},
+						],
+						as: 'followers',
+					},
+				},
+				{
+					$group: {
+						_id: '$_id',
+						name: { $first: '$name' },
+						username: { $first: '$username' },
+						email: { $first: '$email' },
+						following: { $first: '$following' },
+						followers: {
+							$push: { $first: '$followers' },
+						},
+					},
+				},
+			])
+			.toArray();
+		return arrUser[0];
 	}
 
 	static async getUserByEmailOrUsername(email, username) {
