@@ -2,7 +2,7 @@ import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import styles from '../styles';
 import Input from '../components/input/Input';
 
-const Login = () => {
+const Login = ({ navigation }) => {
 	return (
 		<SafeAreaView
 			style={{
@@ -46,7 +46,10 @@ const Login = () => {
 					</Text>
 				</TouchableOpacity>
 				<Text>or</Text>
-				<Text style={{ fontSize: 16, color: '#1877f2', fontWeight: '500' }}>
+				<Text
+					style={{ fontSize: 16, color: '#1877f2', fontWeight: '500' }}
+					onPress={() => navigation.navigate('Register')}
+				>
 					Create an account
 				</Text>
 			</View>
