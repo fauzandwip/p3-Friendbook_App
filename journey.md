@@ -50,9 +50,9 @@ Buatlah lookup/relasi pada method/fungsi yang berhubungan dengan MongoDB yang su
 
   - [x] Menampilkan nama/username user pada data komentar
 
-- [ ] Get User by Id: untuk menampilkan profile user
-  - [ ] Menampilkan list nama/username user follower
-  - [ ] Menampilkan list nama/username user following
+- [x] Get User by Id: untuk menampilkan profile user
+  - [x] Menampilkan list nama/username user follower
+  - [x] Menampilkan list nama/username user following
 
 ### Redis - Cache
 
