@@ -15,13 +15,13 @@ const Login = ({ navigation }) => {
 			>
 				<Text
 					style={{
-						marginBottom: 70,
-						fontSize: 30,
+						marginBottom: 40,
+						fontSize: 40,
 						color: '#1877f2',
 						fontWeight: 'bold',
 					}}
 				>
-					Friendbook
+					friendbook
 				</Text>
 
 				<Input placeholder={'email'}></Input>

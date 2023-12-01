@@ -16,13 +16,13 @@ const Register = ({ navigation }) => {
 			>
 				<Text
 					style={{
-						marginBottom: 50,
-						fontSize: 30,
+						marginBottom: 40,
+						fontSize: 40,
 						color: '#1877f2',
 						fontWeight: 'bold',
 					}}
 				>
-					Friendbook
+					friendbook
 				</Text>
 
 				<Input placeholder={'name'}></Input>
