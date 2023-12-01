@@ -7,34 +7,27 @@ import {
 	View,
 } from 'react-native';
 import Post from '../components/Post';
+import CreatePost from '../components/CreatePost';
 
 const Home = ({ navigation }) => {
 	return (
 		<ScrollView
-			style={
-				{
-					// height: '100%',
-					// backgroundColor: 'red',
-				}
-			}
+			style={{
+				// height: '100%',
+				backgroundColor: 'lightgray',
+			}}
 		>
-			<View>
-				<TouchableOpacity
-					style={{ padding: 20 }}
-					onPress={() => navigation.navigate('DetailPost')}
+			<View style={{ gap: 10 }}>
+				<CreatePost />
+				<View
+					style={{
+						gap: 10,
+					}}
 				>
-					<Text>CREATE POST</Text>
-				</TouchableOpacity>
-			</View>
-			<View
-				style={{
-					gap: 10,
-					backgroundColor: 'lightgray',
-				}}
-			>
-				<Post></Post>
-				<Post></Post>
-				<Post></Post>
+					<Post></Post>
+					<Post></Post>
+					<Post></Post>
+				</View>
 			</View>
 		</ScrollView>
 	);

@@ -70,8 +70,8 @@ export default function App() {
 							headerTitle: 'friendbook',
 							headerTintColor: '#1877f2',
 							headerTitleStyle: {
-								fontSize: 24,
-								elevation: 0,
+								fontWeight: 'bold',
+								fontSize: 30,
 							},
 							headerTitleAlign: 'left',
 							headerRight: () => <SearchButton />,
