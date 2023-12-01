@@ -2,7 +2,8 @@ import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import styles from '../styles';
 import Input from '../components/Input';
 
-const Login = ({ navigation }) => {
+const Login = ({ navigation, route }) => {
+	console.log(route);
 	return (
 		<View style={{ ...styles.container }}>
 			<View
@@ -34,6 +35,10 @@ const Login = ({ navigation }) => {
 						width: '100%',
 						padding: 10,
 						borderRadius: 20,
+					}}
+					onPress={() => {
+						console.log(route.params.isLogin);
+						route.params.setIsLogin(true);
 					}}
 				>
 					<Text style={{ color: 'white', textAlign: 'center', fontSize: 18 }}>

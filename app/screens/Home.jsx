@@ -1,7 +1,14 @@
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import {
+	SafeAreaView,
+	ScrollView,
+	Text,
+	TouchableOpacity,
+	TouchableOpacityComponent,
+	View,
+} from 'react-native';
 import Post from '../components/Post';
 
-const Home = () => {
+const Home = ({ navigation }) => {
 	return (
 		<ScrollView
 			style={
@@ -11,6 +18,14 @@ const Home = () => {
 				}
 			}
 		>
+			<View>
+				<TouchableOpacity
+					style={{ padding: 20 }}
+					onPress={() => navigation.navigate('DetailPost')}
+				>
+					<Text>CREATE POST</Text>
+				</TouchableOpacity>
+			</View>
 			<View
 				style={{
 					gap: 10,
