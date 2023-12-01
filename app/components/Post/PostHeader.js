@@ -4,10 +4,9 @@ const PostHeader = () => {
 	return (
 		<View
 			style={{
-				display: 'flex',
 				flexDirection: 'row',
-				padding: 10,
 				alignItems: 'center',
+				padding: 10,
 				gap: 10,
 			}}
 		>

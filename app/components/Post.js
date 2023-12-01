@@ -9,8 +9,6 @@ const Post = () => {
 			style={{
 				backgroundColor: 'white',
 				borderColor: 'black',
-				display: 'flex',
-				flexDirection: 'column',
 			}}
 		>
 			<PostHeader />

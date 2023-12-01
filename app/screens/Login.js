@@ -4,14 +4,9 @@ import Input from '../components/Input';
 
 const Login = ({ navigation }) => {
 	return (
-		<SafeAreaView
-			style={{
-				...styles.container,
-			}}
-		>
+		<View style={{ ...styles.container }}>
 			<View
 				style={{
-					display: 'flex',
 					gap: 10,
 					justifyContent: 'center',
 					alignItems: 'center',
@@ -34,6 +29,7 @@ const Login = ({ navigation }) => {
 				<TouchableOpacity
 					style={{
 						marginTop: 30,
+						marginBottom: 10,
 						backgroundColor: '#1877f2',
 						width: '100%',
 						padding: 10,
@@ -44,15 +40,15 @@ const Login = ({ navigation }) => {
 						Login
 					</Text>
 				</TouchableOpacity>
-				<Text>or</Text>
 				<Text
-					style={{ fontSize: 16, color: '#1877f2', fontWeight: '500' }}
+					style={{ fontSize: 13, color: 'gray', fontWeight: '500' }}
 					onPress={() => navigation.navigate('Register')}
 				>
-					Create an account
+					Don't have account?{' '}
+					<Text style={{ color: '#1877f2' }}>Create an account</Text>
 				</Text>
 			</View>
-		</SafeAreaView>
+		</View>
 	);
 };
 

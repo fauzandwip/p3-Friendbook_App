@@ -4,11 +4,7 @@ import Input from '../components/Input';
 
 const Register = ({ navigation }) => {
 	return (
-		<SafeAreaView
-			style={{
-				...styles.container,
-			}}
-		>
+		<View style={{ ...styles.container }}>
 			<View
 				style={{
 					display: 'flex',
@@ -20,7 +16,7 @@ const Register = ({ navigation }) => {
 			>
 				<Text
 					style={{
-						marginBottom: 70,
+						marginBottom: 50,
 						fontSize: 30,
 						color: '#1877f2',
 						fontWeight: 'bold',
@@ -36,6 +32,7 @@ const Register = ({ navigation }) => {
 				<TouchableOpacity
 					style={{
 						marginTop: 30,
+						marginBottom: 10,
 						backgroundColor: '#1877f2',
 						width: '100%',
 						padding: 10,
@@ -46,15 +43,14 @@ const Register = ({ navigation }) => {
 						Register
 					</Text>
 				</TouchableOpacity>
-				<Text>or</Text>
 				<Text
-					style={{ fontSize: 16, color: '#1877f2', fontWeight: '500' }}
+					style={{ fontSize: 13, color: 'gray', fontWeight: '500' }}
 					onPress={() => navigation.navigate('Login')}
 				>
-					Already have an account
+					You have account? <Text style={{ color: '#1877f2' }}>Login now</Text>
 				</Text>
 			</View>
-		</SafeAreaView>
+		</View>
 	);
 };
 
