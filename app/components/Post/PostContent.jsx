@@ -2,12 +2,7 @@ import { Image, Text, View } from 'react-native';
 
 const PostContent = () => {
 	return (
-		<View
-			style={{
-				display: 'flex',
-				flexDirection: 'column',
-			}}
-		>
+		<View>
 			<Text style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
 				Pirates of the Caribbean is a Disney media franchise encompassing
 				numerous theme park rides, a series of films, and spin-off novels, as
@@ -17,7 +12,6 @@ const PostContent = () => {
 				style={{
 					aspectRatio: 2 / 1,
 					objectFit: 'cover',
-					backgroundColor: 'red',
 				}}
 				source={{
 					// uri: 'https://www.hitxp.com/wp-content/uploads/2019/12/pirates_of_the_caribbean.jpg',

@@ -4,10 +4,9 @@ const PostHeader = () => {
 	return (
 		<View
 			style={{
-				display: 'flex',
 				flexDirection: 'row',
-				padding: 10,
 				alignItems: 'center',
+				padding: 10,
 				gap: 10,
 			}}
 		>
@@ -15,8 +14,8 @@ const PostHeader = () => {
 				source={{ uri: 'https://i.imgur.com/4gaSugI.jpg' }}
 				style={{
 					aspectRatio: 1 / 1,
-					width: 44,
-					borderRadius: 22,
+					width: 50,
+					borderRadius: 25,
 				}}
 			/>
 			<View style={{ flex: 1, gap: 2 }}>

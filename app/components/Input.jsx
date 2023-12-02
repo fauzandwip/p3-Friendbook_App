@@ -12,7 +12,7 @@ const Input = ({ placeholder, secure = false }) => {
 			}}
 			placeholder={placeholder}
 			secureTextEntry={secure}
-		></TextInput>
+		/>
 	);
 };
 

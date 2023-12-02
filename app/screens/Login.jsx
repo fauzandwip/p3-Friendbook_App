@@ -2,16 +2,12 @@ import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import styles from '../styles';
 import Input from '../components/Input';
 
-const Register = ({ navigation }) => {
+const Login = ({ navigation, route }) => {
+	console.log(route);
 	return (
-		<SafeAreaView
-			style={{
-				...styles.container,
-			}}
-		>
+		<View style={{ ...styles.container }}>
 			<View
 				style={{
-					display: 'flex',
 					gap: 10,
 					justifyContent: 'center',
 					alignItems: 'center',
@@ -20,42 +16,45 @@ const Register = ({ navigation }) => {
 			>
 				<Text
 					style={{
-						marginBottom: 70,
-						fontSize: 30,
+						marginBottom: 40,
+						fontSize: 40,
 						color: '#1877f2',
 						fontWeight: 'bold',
 					}}
 				>
-					Friendbook
+					friendbook
 				</Text>
 
-				<Input placeholder={'name'}></Input>
-				<Input placeholder={'username'}></Input>
 				<Input placeholder={'email'}></Input>
 				<Input placeholder={'password'} secure={true}></Input>
 				<TouchableOpacity
 					style={{
 						marginTop: 30,
+						marginBottom: 10,
 						backgroundColor: '#1877f2',
 						width: '100%',
 						padding: 10,
 						borderRadius: 20,
 					}}
+					onPress={() => {
+						console.log(route.params.isLogin);
+						route.params.setIsLogin(true);
+					}}
 				>
 					<Text style={{ color: 'white', textAlign: 'center', fontSize: 18 }}>
-						Register
+						Login
 					</Text>
 				</TouchableOpacity>
-				<Text>or</Text>
 				<Text
-					style={{ fontSize: 16, color: '#1877f2', fontWeight: '500' }}
-					onPress={() => navigation.navigate('Login')}
+					style={{ fontSize: 13, color: 'gray', fontWeight: '500' }}
+					onPress={() => navigation.navigate('Register')}
 				>
-					Already have an account
+					Don't have account?{' '}
+					<Text style={{ color: '#1877f2' }}>Create an account</Text>
 				</Text>
 			</View>
-		</SafeAreaView>
+		</View>
 	);
 };
 
-export default Register;
+export default Login;
