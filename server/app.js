@@ -11,6 +11,7 @@ const authentication = require('./middlewares/authentication');
 const server = new ApolloServer({
 	typeDefs,
 	resolvers,
+	introspection: true,
 });
 
 connect()
