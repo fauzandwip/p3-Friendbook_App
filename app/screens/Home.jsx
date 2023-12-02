@@ -1,4 +1,5 @@
 import {
+	FlatList,
 	SafeAreaView,
 	ScrollView,
 	Text,
@@ -8,28 +9,55 @@ import {
 } from 'react-native';
 import Post from '../components/Post';
 import CreatePost from '../components/CreatePost';
+import { useEffect } from 'react';
+import { gql, useQuery } from '@apollo/client';
+
+const GET_POSTS = gql`
+	query Posts {
+		posts {
+			_id
+			content
+			tags
+			imgUrl
+			authorId
+			comments {
+				content
+				authorId
+				createdAt
+			}
+			likes {
+				authorId
+			}
+			createdAt
+			updatedAt
+			user {
+				_id
+				name
+				username
+				email
+			}
+		}
+	}
+`;
 
 const Home = ({ navigation }) => {
+	const { data, loading, error } = useQuery(GET_POSTS);
+
+	// console.log(data, '>>> posts');
+	// console.log(JSON.stringify(error, null, 2));
+
 	return (
-		<ScrollView
-			style={{
-				// height: '100%',
-				backgroundColor: 'lightgray',
-			}}
-		>
-			<View style={{ gap: 10 }}>
-				<CreatePost />
-				<View
-					style={{
-						gap: 10,
-					}}
-				>
-					<Post isTouchable={true}></Post>
-					<Post isTouchable={true}></Post>
-					<Post isTouchable={true}></Post>
-				</View>
-			</View>
-		</ScrollView>
+		<View style={{ gap: 10, flex: 1 }}>
+			<CreatePost />
+			{data && (
+				<FlatList
+					data={data.posts}
+					renderItem={({ item }) => <Post data={item} isTouchable={true} />}
+					keyExtractor={(item) => item._id}
+					ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+				/>
+			)}
+		</View>
 	);
 };
 

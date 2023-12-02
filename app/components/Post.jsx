@@ -4,9 +4,10 @@ import PostContent from './Post/PostContent';
 import PostLikeComment from './Post/PostLikeComment';
 import { useNavigation } from '@react-navigation/native';
 
-const Post = ({ isTouchable }) => {
+const Post = ({ isTouchable, data }) => {
 	const navigation = useNavigation();
 
+	// console.log(data, '>>> post');
 	return (
 		<View
 			style={{
@@ -16,16 +17,16 @@ const Post = ({ isTouchable }) => {
 		>
 			{isTouchable ? (
 				<TouchableOpacity onPress={() => navigation.navigate('DetailPost')}>
-					<PostHeader />
-					<PostContent />
+					<PostHeader data={data} />
+					<PostContent data={data} />
 				</TouchableOpacity>
 			) : (
 				<>
-					<PostHeader />
-					<PostContent />
+					<PostHeader data={data} />
+					<PostContent data={data} />
 				</>
 			)}
-			<PostLikeComment />
+			<PostLikeComment data={data} />
 		</View>
 	);
 };

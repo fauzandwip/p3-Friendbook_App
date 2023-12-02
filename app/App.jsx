@@ -114,13 +114,13 @@ const MainNavigation = () => {
 					) : (
 						<>
 							<Stack.Screen
-								name="Register"
-								component={Register}
+								name="Login"
+								component={Login}
 								options={{ headerShown: false }}
 							/>
 							<Stack.Screen
-								name="Login"
-								component={Login}
+								name="Register"
+								component={Register}
 								options={{ headerShown: false }}
 							/>
 						</>

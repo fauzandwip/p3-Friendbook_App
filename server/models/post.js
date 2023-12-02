@@ -18,7 +18,27 @@ class Post {
 	static async getAllPost() {
 		return await getDB()
 			.collection('posts')
-			.aggregate([{ $sort: { createdAt: -1 } }])
+			.aggregate([
+				{
+					$sort: { createdAt: -1 },
+				},
+				{
+					$lookup: {
+						from: 'users',
+						foreignField: '_id',
+						localField: 'authorId',
+						as: 'user',
+						pipeline: [
+							{
+								$project: { password: 0 },
+							},
+						],
+					},
+				},
+				{
+					$unwind: '$user',
+				},
+			])
 			.toArray();
 	}
 

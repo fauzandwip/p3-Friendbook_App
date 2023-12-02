@@ -1,12 +1,10 @@
 import { Image, Text, View } from 'react-native';
 
-const PostContent = () => {
+const PostContent = ({ data }) => {
 	return (
 		<View>
 			<Text style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
-				Pirates of the Caribbean is a Disney media franchise encompassing
-				numerous theme park rides, a series of films, and spin-off novels, as
-				well as a number of related video games and other media publications.
+				{data.content}
 			</Text>
 			<Image
 				style={{
