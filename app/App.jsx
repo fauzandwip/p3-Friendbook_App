@@ -18,6 +18,7 @@ import { useState } from 'react';
 import SearchButton from './components/SearchButton';
 import CreateFormPost from './screens/CreatePostForm';
 import Search from './screens/Search';
+import DetailPost from './screens/DetailPost';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -101,7 +102,7 @@ export default function App() {
 								/>
 								<Stack.Screen
 									name="DetailPost"
-									component={Profile}
+									component={DetailPost}
 									options={{
 										headerRight: () => <View></View>,
 										headerShadowVisible: true,

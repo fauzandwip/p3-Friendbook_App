@@ -1,35 +1,28 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Image, Text, View } from 'react-native';
 
 const PostHeader = () => {
-	const navigation = useNavigation();
-
 	return (
-		<TouchableOpacity onPress={() => navigation.navigate('DetailPost')}>
-			<View
+		<View
+			style={{
+				flexDirection: 'row',
+				alignItems: 'center',
+				padding: 10,
+				gap: 10,
+			}}
+		>
+			<Image
+				source={{ uri: 'https://i.imgur.com/4gaSugI.jpg' }}
 				style={{
-					flexDirection: 'row',
-					alignItems: 'center',
-					padding: 10,
-					gap: 10,
+					aspectRatio: 1 / 1,
+					width: 50,
+					borderRadius: 25,
 				}}
-			>
-				<Image
-					source={{ uri: 'https://i.imgur.com/4gaSugI.jpg' }}
-					style={{
-						aspectRatio: 1 / 1,
-						width: 44,
-						borderRadius: 22,
-					}}
-				/>
-				<View style={{ flex: 1, gap: 2 }}>
-					<Text style={{ fontSize: 18, fontWeight: 'bold' }}>Jack Sparrow</Text>
-					<Text style={{ fontSize: 12, color: 'gray', marginLeft: 2 }}>
-						27m
-					</Text>
-				</View>
+			/>
+			<View style={{ flex: 1, gap: 2 }}>
+				<Text style={{ fontSize: 18, fontWeight: 'bold' }}>Jack Sparrow</Text>
+				<Text style={{ fontSize: 12, color: 'gray', marginLeft: 2 }}>27m</Text>
 			</View>
-		</TouchableOpacity>
+		</View>
 	);
 };
 

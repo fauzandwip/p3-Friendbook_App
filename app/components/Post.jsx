@@ -1,9 +1,12 @@
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import PostHeader from './Post/PostHeader';
 import PostContent from './Post/PostContent';
 import PostLikeComment from './Post/PostLikeComment';
+import { useNavigation } from '@react-navigation/native';
 
-const Post = () => {
+const Post = ({ isTouchable }) => {
+	const navigation = useNavigation();
+
 	return (
 		<View
 			style={{
@@ -11,8 +14,17 @@ const Post = () => {
 				borderColor: 'black',
 			}}
 		>
-			<PostHeader />
-			<PostContent />
+			{isTouchable ? (
+				<TouchableOpacity onPress={() => navigation.navigate('DetailPost')}>
+					<PostHeader />
+					<PostContent />
+				</TouchableOpacity>
+			) : (
+				<>
+					<PostHeader />
+					<PostContent />
+				</>
+			)}
 			<PostLikeComment />
 		</View>
 	);

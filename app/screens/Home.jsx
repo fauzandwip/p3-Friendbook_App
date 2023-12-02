@@ -24,9 +24,9 @@ const Home = ({ navigation }) => {
 						gap: 10,
 					}}
 				>
-					<Post></Post>
-					<Post></Post>
-					<Post></Post>
+					<Post isTouchable={true}></Post>
+					<Post isTouchable={true}></Post>
+					<Post isTouchable={true}></Post>
 				</View>
 			</View>
 		</ScrollView>

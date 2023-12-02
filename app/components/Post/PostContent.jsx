@@ -12,7 +12,6 @@ const PostContent = () => {
 				style={{
 					aspectRatio: 2 / 1,
 					objectFit: 'cover',
-					backgroundColor: 'red',
 				}}
 				source={{
 					// uri: 'https://www.hitxp.com/wp-content/uploads/2019/12/pirates_of_the_caribbean.jpg',
