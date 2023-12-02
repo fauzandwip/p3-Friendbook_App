@@ -21,6 +21,7 @@ const userTypeDefs = `#graphql
   }
 
   type FollowDetail {
+    _id: ID
     followingId: String
     followerId: String
     user: UserInformation

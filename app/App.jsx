@@ -14,11 +14,14 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Home from './screens/Home';
 import Profile from './screens/Profile';
-import { useState } from 'react';
-import SearchButton from './components/SearchButton';
+import { useContext, useState } from 'react';
 import CreateFormPost from './screens/CreatePostForm';
 import Search from './screens/Search';
 import DetailPost from './screens/DetailPost';
+import { ApolloProvider } from '@apollo/client';
+import client from './config/apollo';
+import { LoginContext, LoginContextProvider } from './context/LoginContext';
+import HeaderRight from './components/HeaderRight';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -56,77 +59,83 @@ const Main = () => {
 	);
 };
 
-export default function App() {
-	const [isLogin, setIsLogin] = useState(true);
+const MainNavigation = () => {
+	const { isLoggedIn } = useContext(LoginContext);
 
 	return (
-		<>
-			<SafeAreaView
-				style={{
-					flex: 1,
-					paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-				}}
-			>
-				<NavigationContainer>
-					<Stack.Navigator
-						screenOptions={{
-							headerTitle: 'friendbook',
-							headerTintColor: '#1877f2',
-							headerTitleStyle: {
-								fontWeight: 'bold',
-								fontSize: 30,
-							},
-							headerTitleAlign: 'left',
-							headerRight: () => <SearchButton />,
-							headerShadowVisible: false,
-						}}
-					>
-						{isLogin ? (
-							<>
-								<Stack.Screen name="Main" component={Main} />
-								<Stack.Screen
-									name="CreatePost"
-									component={CreateFormPost}
-									options={{
-										headerRight: () => <View></View>,
-										headerShadowVisible: true,
-									}}
-								/>
-								<Stack.Screen
-									name="Search"
-									component={Search}
-									options={{
-										headerRight: () => <View></View>,
-										headerShadowVisible: true,
-									}}
-								/>
-								<Stack.Screen
-									name="DetailPost"
-									component={DetailPost}
-									options={{
-										headerRight: () => <View></View>,
-										headerShadowVisible: true,
-									}}
-								/>
-							</>
-						) : (
-							<>
-								<Stack.Screen
-									name="Register"
-									component={Register}
-									options={{ headerShown: false }}
-								/>
-								<Stack.Screen
-									name="Login"
-									component={Login}
-									options={{ headerShown: false }}
-									initialParams={{ isLogin, setIsLogin }}
-								/>
-							</>
-						)}
-					</Stack.Navigator>
-				</NavigationContainer>
-			</SafeAreaView>
-		</>
+		<SafeAreaView
+			style={{
+				flex: 1,
+				paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+			}}
+		>
+			<NavigationContainer>
+				<Stack.Navigator
+					screenOptions={{
+						headerTitle: 'friendbook',
+						headerTintColor: '#1877f2',
+						headerTitleStyle: {
+							fontWeight: 'bold',
+							fontSize: 30,
+						},
+						headerTitleAlign: 'left',
+						headerRight: () => <HeaderRight />,
+						headerShadowVisible: false,
+					}}
+				>
+					{isLoggedIn ? (
+						<>
+							<Stack.Screen name="Main" component={Main} />
+							<Stack.Screen
+								name="CreatePost"
+								component={CreateFormPost}
+								options={{
+									headerRight: () => <View></View>,
+									headerShadowVisible: true,
+								}}
+							/>
+							<Stack.Screen
+								name="Search"
+								component={Search}
+								options={{
+									headerRight: () => <View></View>,
+									headerShadowVisible: true,
+								}}
+							/>
+							<Stack.Screen
+								name="DetailPost"
+								component={DetailPost}
+								options={{
+									headerRight: () => <View></View>,
+									headerShadowVisible: true,
+								}}
+							/>
+						</>
+					) : (
+						<>
+							<Stack.Screen
+								name="Login"
+								component={Login}
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen
+								name="Register"
+								component={Register}
+								options={{ headerShown: false }}
+							/>
+						</>
+					)}
+				</Stack.Navigator>
+			</NavigationContainer>
+		</SafeAreaView>
+	);
+};
+export default function App() {
+	return (
+		<ApolloProvider client={client}>
+			<LoginContextProvider>
+				<MainNavigation />
+			</LoginContextProvider>
+		</ApolloProvider>
 	);
 }

@@ -18,16 +18,38 @@ class Post {
 	static async getAllPost() {
 		return await getDB()
 			.collection('posts')
-			.aggregate([{ $sort: { createdAt: -1 } }])
+			.aggregate([
+				{
+					$sort: { createdAt: -1 },
+				},
+				{
+					$lookup: {
+						from: 'users',
+						foreignField: '_id',
+						localField: 'authorId',
+						as: 'user',
+						pipeline: [
+							{
+								$project: { password: 0 },
+							},
+						],
+					},
+				},
+				{
+					$unwind: '$user',
+				},
+			])
 			.toArray();
 	}
 
 	static async getPostById(id) {
+		console.log(id);
+
 		const arrPost = await getDB()
 			.collection('posts')
 			.aggregate([
 				{ $match: { _id: new ObjectId(id) } },
-				{ $unwind: '$comments' },
+				{ $unwind: { path: '$comments', preserveNullAndEmptyArrays: true } },
 				{
 					$lookup: {
 						from: 'users',
@@ -72,7 +94,7 @@ class Post {
 						updatedAt: { $first: '$updatedAt' },
 					},
 				},
-				{ $unwind: '$likes' },
+				{ $unwind: { path: '$likes', preserveNullAndEmptyArrays: true } },
 				{
 					$lookup: {
 						from: 'users',
@@ -103,6 +125,24 @@ class Post {
 					},
 				},
 				{
+					$lookup: {
+						from: 'users',
+						foreignField: '_id',
+						localField: 'authorId',
+						pipeline: [
+							{
+								$project: {
+									password: 0,
+								},
+							},
+						],
+						as: 'user',
+					},
+				},
+				{
+					$unwind: '$user',
+				},
+				{
 					$group: {
 						_id: '$_id',
 						content: { $first: '$content' },
@@ -117,6 +157,7 @@ class Post {
 						},
 						createdAt: { $first: '$createdAt' },
 						updatedAt: { $first: '$updatedAt' },
+						user: { $first: '$user' },
 					},
 				},
 			])

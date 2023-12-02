@@ -22,7 +22,7 @@ class User {
 						as: 'following',
 					},
 				},
-				{ $unwind: '$following' },
+				{ $unwind: { path: '$following', preserveNullAndEmptyArrays: true } },
 				{
 					$lookup: {
 						from: 'users',
@@ -71,7 +71,7 @@ class User {
 						as: 'followers',
 					},
 				},
-				{ $unwind: '$followers' },
+				{ $unwind: { path: '$followers', preserveNullAndEmptyArrays: true } },
 				{
 					$lookup: {
 						from: 'users',

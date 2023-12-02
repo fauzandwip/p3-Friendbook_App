@@ -16,6 +16,7 @@ const postTypeDefs = `#graphql
     likes: [Like]
     createdAt: Date
     updatedAt: Date
+    user: User
   }
 
   type Comment {
@@ -42,6 +43,7 @@ const postTypeDefs = `#graphql
     likes: [LikeDetail]
     createdAt: Date
     updatedAt: Date
+    user: User
   }
 
   type CommentDetail {
@@ -96,9 +98,11 @@ const postResolvers = {
 				}
 
 				const posts = await Post.getAllPost();
+				console.log(posts);
 				await redis.set('post:all', JSON.stringify(posts));
 				console.log('from mongodb');
 
+				// console.dir(posts, { depth: null });
 				return posts;
 			} catch (error) {
 				throw error;

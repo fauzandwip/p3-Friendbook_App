@@ -1,19 +1,32 @@
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import UserInformation from '../components/UserInformation';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { gql, useMutation } from '@apollo/client';
 
-const CreateFormPost = () => {
+const ADD_POST = gql`
+	mutation AddPost($post: NewPost) {
+		addPost(post: $post) {
+			_id
+			content
+			tags
+			imgUrl
+			authorId
+		}
+	}
+`;
+
+const CreateFormPost = ({ query }) => {
+	const { navigate } = useNavigation();
+	const [addPost, { data, loading, error }] = useMutation(ADD_POST, {
+		refetchQueries: [query, 'Posts'],
+	});
+	const [imgUrl, setImgUrl] = useState('');
+	const [content, setContent] = useState('');
 	const [tagInput, setTagInput] = useState('');
 	const tagInputRef = useRef(null);
-	const [tags, setTags] = useState([
-		'tailwindcss',
-		'react',
-		'jsx',
-		'ios',
-		'android',
-		'react-native',
-	]);
+	const [tags, setTags] = useState(['tailwindcss', 'react-native']);
 
 	const addTag = () => {
 		// console.log(e.nativeEvent);
@@ -38,6 +51,25 @@ const CreateFormPost = () => {
 		}
 	}, [tags]);
 
+	const handleOnSubmit = async () => {
+		try {
+			// console.log(imgUrl, tags, content);
+			const response = await addPost({
+				variables: {
+					post: {
+						imgUrl,
+						content,
+						tags,
+					},
+				},
+			});
+			navigate('Home');
+			console.log(response, '>>> response add post');
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<View
 			style={{
@@ -59,7 +91,10 @@ const CreateFormPost = () => {
 					borderRadius: 10,
 					marginTop: 20,
 				}}
+				value={imgUrl}
+				onChangeText={(text) => setImgUrl(text)}
 				placeholder="Image URL"
+				autoCapitalize="none"
 			/>
 			<View
 				style={{
@@ -126,6 +161,9 @@ const CreateFormPost = () => {
 					// flexGrow: 1,
 					textAlignVertical: 'top',
 				}}
+				value={content}
+				onChangeText={(text) => setContent(text)}
+				autoCapitalize="none"
 				placeholder="What's on your mind?"
 			></TextInput>
 			<TouchableOpacity
@@ -135,6 +173,7 @@ const CreateFormPost = () => {
 					paddingVertical: 10,
 					borderRadius: 10,
 				}}
+				onPress={handleOnSubmit}
 			>
 				<Text style={{ color: 'white', fontSize: 16, textAlign: 'center' }}>
 					POST

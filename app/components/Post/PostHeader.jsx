@@ -1,6 +1,7 @@
 import { Image, Text, View } from 'react-native';
 
-const PostHeader = () => {
+const PostHeader = ({ data }) => {
+	// console.log(data, '>>> post header');
 	return (
 		<View
 			style={{
@@ -19,7 +20,9 @@ const PostHeader = () => {
 				}}
 			/>
 			<View style={{ flex: 1, gap: 2 }}>
-				<Text style={{ fontSize: 18, fontWeight: 'bold' }}>Jack Sparrow</Text>
+				<Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+					{data?.user?.username ?? data?.user?.name}
+				</Text>
 				<Text style={{ fontSize: 12, color: 'gray', marginLeft: 2 }}>27m</Text>
 			</View>
 		</View>

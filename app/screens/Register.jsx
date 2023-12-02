@@ -1,8 +1,54 @@
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import styles from '../styles';
 import Input from '../components/Input';
+import { useState } from 'react';
+import { gql, useMutation } from '@apollo/client';
+
+const REGISTER = gql`
+	mutation Register($user: NewUser) {
+		register(user: $user) {
+			_id
+			name
+			username
+			email
+		}
+	}
+`;
 
 const Register = ({ navigation }) => {
+	const [userInput, setUserInput] = useState({
+		name: 'Test',
+		username: 'test',
+		email: 'test@gmail.com',
+		password: '12345',
+	});
+	const [register, { data, loading, error }] = useMutation(REGISTER);
+
+	const onChangeText = (text, key) => {
+		setUserInput((prev) => ({ ...prev, [key]: text }));
+	};
+
+	const handleOnRegister = async () => {
+		try {
+			if (loading) return;
+			const user = {
+				name: userInput.name,
+				username: userInput.username,
+				email: userInput.email,
+				password: userInput.password,
+			};
+			const response = await register({
+				variables: { user },
+			});
+			// console.log(response, '>>> response');
+			navigation.navigate('Login');
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	// console.log(JSON.stringify(error, null, 2));
+
 	return (
 		<View style={{ ...styles.container }}>
 			<View
@@ -25,10 +71,27 @@ const Register = ({ navigation }) => {
 					friendbook
 				</Text>
 
-				<Input placeholder={'name'}></Input>
-				<Input placeholder={'username'}></Input>
-				<Input placeholder={'email'}></Input>
-				<Input placeholder={'password'} secure={true}></Input>
+				<Input
+					placeholder={'name'}
+					value={userInput.name}
+					onChangeText={(text) => onChangeText(text, 'name')}
+				/>
+				<Input
+					placeholder={'username'}
+					value={userInput.username}
+					onChangeText={(text) => onChangeText(text, 'username')}
+				/>
+				<Input
+					placeholder={'email'}
+					value={userInput.email}
+					onChangeText={(text) => onChangeText(text, 'email')}
+				/>
+				<Input
+					placeholder={'password'}
+					secure={true}
+					value={userInput.password}
+					onChangeText={(text) => onChangeText(text, 'password')}
+				/>
 				<TouchableOpacity
 					style={{
 						marginTop: 30,
@@ -38,6 +101,7 @@ const Register = ({ navigation }) => {
 						padding: 10,
 						borderRadius: 20,
 					}}
+					onPress={handleOnRegister}
 				>
 					<Text style={{ color: 'white', textAlign: 'center', fontSize: 18 }}>
 						Register

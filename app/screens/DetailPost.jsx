@@ -1,9 +1,95 @@
-import { Image, ScrollView, Text, TextInput, View } from 'react-native';
+import {
+	FlatList,
+	Image,
+	ScrollView,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import Post from '../components/Post';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Comment from '../components/Comment';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { useState } from 'react';
 
-const DetailPost = () => {
+const GET_POST_BY_ID = gql`
+	query Post($postId: ID!) {
+		post(id: $postId) {
+			_id
+			content
+			tags
+			imgUrl
+			authorId
+			comments {
+				content
+				authorId
+				createdAt
+				updatedAt
+				user {
+					name
+					username
+				}
+			}
+			likes {
+				authorId
+				createdAt
+				updatedAt
+				user {
+					name
+					username
+				}
+			}
+			createdAt
+			updatedAt
+			user {
+				_id
+				name
+				username
+				email
+			}
+		}
+	}
+`;
+
+const ADD_COMMENT = gql`
+	mutation AddComment($comment: String!, $postId: ID!) {
+		addComment(comment: $comment, postId: $postId)
+	}
+`;
+
+const DetailPost = ({ route, refetchPosts }) => {
+	const [comment, setComment] = useState('');
+	const { data, loading, error } = useQuery(GET_POST_BY_ID, {
+		variables: {
+			postId: route.params.id,
+		},
+	});
+	const [addComment, { data: commentData }] = useMutation(ADD_COMMENT, {
+		refetchQueries: [GET_POST_BY_ID, 'Post'],
+		onCompleted: (data) => refetchPosts,
+	});
+
+	// console.log(data, '>>> post detail');
+	// console.log(route.params.id, '>>> id');
+	// console.log(JSON.stringify(error, null, 2));
+
+	const handleOnAddComment = async () => {
+		try {
+			// console.log(comment);
+			const response = await addComment({
+				variables: {
+					comment,
+					postId: route.params.id,
+				},
+			});
+			setComment('');
+			console.log(response, '>>> resoonse add comment');
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<View
 			style={{
@@ -12,14 +98,15 @@ const DetailPost = () => {
 			}}
 		>
 			<ScrollView style={{ flex: 1 }}>
-				<Post></Post>
+				<Post data={data?.post} />
 				{/* COMMENTS */}
-				<View style={{ backgroundColor: 'white' }}>
-					<Comment />
-					<Comment />
-					<Comment />
-				</View>
+				{data?.post &&
+					data?.post.comments.map((data, index) => {
+						return <Comment key={index} data={data} />;
+					})}
 			</ScrollView>
+
+			{/* ADD COMMENT */}
 			<View
 				style={{
 					flexDirection: 'row',
@@ -41,8 +128,12 @@ const DetailPost = () => {
 						borderRadius: 20,
 						flex: 1,
 					}}
+					value={comment}
+					onChangeText={(text) => setComment(text)}
 				/>
-				<Icon name="send" size={20} color={'gray'} />
+				<TouchableOpacity onPress={handleOnAddComment}>
+					<Icon name="send" size={20} color={comment ? '#1877f2' : 'gray'} />
+				</TouchableOpacity>
 			</View>
 		</View>
 	);
