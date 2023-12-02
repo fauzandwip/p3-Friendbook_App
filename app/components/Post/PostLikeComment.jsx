@@ -55,7 +55,7 @@ const GET_POSTS = gql`
 
 const PostLikeComment = ({ data }) => {
 	const [like, { data: likeData, loading, error }] = useMutation(LIKE, {
-		refetchQueries: [GET_POSTS, 'posts'],
+		refetchQueries: [GET_POSTS, 'Posts'],
 	});
 
 	// console.log(data, '>>> post like');

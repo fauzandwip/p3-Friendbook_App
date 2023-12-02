@@ -14,16 +14,16 @@ const FOLLOW = gql`
 	}
 `;
 
-const GET_USER_BY_NAME_USERNAME = gql`
-	query SearchUserByName($name: String!) {
-		usersByName(name: $name) {
-			_id
-			name
-			username
-			email
-		}
-	}
-`;
+// const GET_USER_BY_NAME_USERNAME = gql`
+// 	query SearchUserByName($name: String!) {
+// 		usersByName(name: $name) {
+// 			_id
+// 			name
+// 			username
+// 			email
+// 		}
+// 	}
+// `;
 
 const UserInformation = ({ childText, button, data, search, query }) => {
 	// console.log(data, '>>> user information');
@@ -32,7 +32,7 @@ const UserInformation = ({ childText, button, data, search, query }) => {
 		follow,
 		{ data: followData, loading: followLoading, error: followError },
 	] = useMutation(FOLLOW, {
-		refetchQueries: [GET_USER_BY_NAME_USERNAME, 'usersByName'],
+		refetchQueries: [query, 'SearchUserByName'],
 	});
 
 	const handleOnFollow = async () => {

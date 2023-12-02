@@ -13,7 +13,7 @@ const PostContent = ({ data }) => {
 				}}
 				source={{
 					// uri: 'https://www.hitxp.com/wp-content/uploads/2019/12/pirates_of_the_caribbean.jpg',
-					uri: 'https://source.unsplash.com/random/900×700/?pirates',
+					uri: 'https://source.unsplash.com/random/900×700/?post',
 				}}
 			/>
 		</View>

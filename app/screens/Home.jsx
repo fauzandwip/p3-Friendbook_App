@@ -48,7 +48,7 @@ const Home = ({ navigation }) => {
 
 	return (
 		<View style={{ gap: 10, flex: 1 }}>
-			<CreatePost />
+			<CreatePost query={GET_POSTS} />
 			{data && (
 				<FlatList
 					data={data.posts}
