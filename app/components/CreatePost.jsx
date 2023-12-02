@@ -28,7 +28,7 @@ const CreatePost = () => {
 					borderRadius: 20,
 					flex: 1,
 				}}
-				onPress={() => navigate('DetailPost')}
+				onPress={() => navigate('CreatePost')}
 			>
 				<Text
 					style={{ textAlign: 'left', fontSize: 16, paddingHorizontal: 20 }}

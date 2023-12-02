@@ -1,5 +1,6 @@
 import { Image, ScrollView, Text, View } from 'react-native';
 import styles from '../styles';
+import UserInformation from '../components/UserInformation';
 
 const Profile = () => {
 	return (
@@ -91,50 +92,8 @@ const Profile = () => {
 							gap: 20,
 						}}
 					>
-						<View
-							style={{
-								flexDirection: 'row',
-								alignItems: 'center',
-								gap: 10,
-							}}
-						>
-							<Image
-								source={{ uri: 'https://i.imgur.com/4gaSugI.jpg' }}
-								style={{
-									aspectRatio: 1 / 1,
-									width: 60,
-									borderRadius: 30,
-								}}
-							/>
-							<View style={{ flex: 1, gap: 2 }}>
-								<Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-									Will Turner
-								</Text>
-								<Text style={{ fontSize: 14 }}>@willturner</Text>
-							</View>
-						</View>
-						<View
-							style={{
-								flexDirection: 'row',
-								alignItems: 'center',
-								gap: 10,
-							}}
-						>
-							<Image
-								source={{ uri: 'https://i.imgur.com/4gaSugI.jpg' }}
-								style={{
-									aspectRatio: 1 / 1,
-									width: 60,
-									borderRadius: 30,
-								}}
-							/>
-							<View style={{ flex: 1, gap: 2 }}>
-								<Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-									Will Turner
-								</Text>
-								<Text style={{ fontSize: 14 }}>@willturner</Text>
-							</View>
-						</View>
+						<UserInformation childText={true} />
+						<UserInformation childText={true} />
 					</View>
 				</ScrollView>
 			</View>
