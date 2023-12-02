@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 const Post = ({ isTouchable, data }) => {
 	const navigation = useNavigation();
 
-	console.log(data, '>>> post');
+	// console.log(data, '>>> post');
 	return (
 		<View
 			style={{

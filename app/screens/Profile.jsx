@@ -132,7 +132,7 @@ const Profile = () => {
 						<FlatList
 							data={isFollowers ? data?.user.followers : data?.user.following}
 							renderItem={({ item }) => (
-								<UserInformation data={item} childText={true} />
+								<UserInformation data={item.user} childText={true} />
 							)}
 							keyExtractor={(item) => item._id}
 							ItemSeparatorComponent={() => <View style={{ height: 20 }} />}

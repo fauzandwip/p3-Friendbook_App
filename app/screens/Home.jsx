@@ -43,8 +43,8 @@ const GET_POSTS = gql`
 const Home = ({ navigation }) => {
 	const { data, loading, error } = useQuery(GET_POSTS);
 
-	console.log(data, '>>> posts');
-	console.log(JSON.stringify(error, null, 2));
+	// console.log(data, '>>> posts');
+	// console.log(JSON.stringify(error, null, 2));
 
 	return (
 		<View style={{ gap: 10, flex: 1 }}>

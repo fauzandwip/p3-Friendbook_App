@@ -1,7 +1,7 @@
 import { Image, Text, View } from 'react-native';
 
 const PostHeader = ({ data }) => {
-	console.log(data, '>>> post header');
+	// console.log(data, '>>> post header');
 	return (
 		<View
 			style={{
