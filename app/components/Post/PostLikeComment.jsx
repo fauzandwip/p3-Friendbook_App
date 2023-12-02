@@ -1,6 +1,7 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { gql, useMutation } from '@apollo/client';
+import { useNavigation } from '@react-navigation/native';
 
 const IconFooterPost = ({ name, text, onPress }) => {
 	return (
@@ -54,6 +55,7 @@ const GET_POSTS = gql`
 `;
 
 const PostLikeComment = ({ data }) => {
+	const { navigate } = useNavigation();
 	const [like, { data: likeData, loading, error }] = useMutation(LIKE, {
 		refetchQueries: [GET_POSTS, 'Posts'],
 	});
@@ -110,7 +112,7 @@ const PostLikeComment = ({ data }) => {
 			</View>
 
 			{/* like and comment button */}
-			<View
+			<TouchableOpacity
 				style={{
 					flexDirection: 'row',
 					justifyContent: 'space-around',
@@ -123,8 +125,16 @@ const PostLikeComment = ({ data }) => {
 					text={'Like'}
 					onPress={handleOnLike}
 				/>
-				<IconFooterPost name={'comment-o'} text={'Comment'} />
-			</View>
+				<IconFooterPost
+					name={'comment-o'}
+					text={'Comment'}
+					onPress={() =>
+						navigate('DetailPost', {
+							id: data._id,
+						})
+					}
+				/>
+			</TouchableOpacity>
 		</View>
 	);
 };

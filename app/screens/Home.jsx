@@ -45,12 +45,9 @@ const Home = ({ navigation }) => {
 
 	// console.log(data, '>>> posts');
 	// console.log(JSON.stringify(error, null, 2));
-	// useEffect(() => {
-	// 	refetch();
-	// }, []);
 
 	return (
-		<View style={{ gap: 10, flex: 1 }}>
+		<View style={{ flex: 1, backgroundColor: 'lightgray', gap: 10 }}>
 			<CreatePost query={GET_POSTS} />
 			{data && (
 				<FlatList

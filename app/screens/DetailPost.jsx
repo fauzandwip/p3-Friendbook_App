@@ -76,7 +76,7 @@ const DetailPost = ({ route, refetchPosts }) => {
 
 	const handleOnAddComment = async () => {
 		try {
-			console.log(comment);
+			// console.log(comment);
 			const response = await addComment({
 				variables: {
 					comment,

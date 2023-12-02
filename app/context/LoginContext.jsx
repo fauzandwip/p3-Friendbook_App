@@ -36,7 +36,7 @@ export const LoginContextProvider = ({ children }) => {
 		});
 	}, []);
 
-	console.log(isLoggedIn);
+	// console.log(isLoggedIn);
 
 	return (
 		<LoginContext.Provider

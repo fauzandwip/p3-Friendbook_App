@@ -92,10 +92,10 @@ const postResolvers = {
 				await ctx.authentication();
 				const postsCache = await redis.get('post:all');
 
-				// if (postsCache) {
-				// 	console.log('from redis');
-				// 	return JSON.parse(postsCache);
-				// }
+				if (postsCache) {
+					console.log('from redis');
+					return JSON.parse(postsCache);
+				}
 
 				const posts = await Post.getAllPost();
 				console.log(posts);

@@ -133,7 +133,6 @@ const Search = () => {
 						renderItem={({ item }) => (
 							<UserInformation
 								data={item}
-								search={search}
 								query={GET_USER_BY_NAME_USERNAME}
 								childText={true}
 								button={!isFollowing(item._id, profile?.user.following)}

@@ -53,7 +53,7 @@ const CreateFormPost = ({ query }) => {
 
 	const handleOnSubmit = async () => {
 		try {
-			console.log(imgUrl, tags, content);
+			// console.log(imgUrl, tags, content);
 			const response = await addPost({
 				variables: {
 					post: {

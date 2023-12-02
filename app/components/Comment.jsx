@@ -1,7 +1,7 @@
 import { Image, Text, View } from 'react-native';
 
 const Comment = ({ data }) => {
-	console.log(data, '>>> comment');
+	// console.log(data, '>>> comment');
 	return (
 		<View
 			style={{

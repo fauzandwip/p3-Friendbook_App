@@ -25,7 +25,7 @@ const FOLLOW = gql`
 // 	}
 // `;
 
-const UserInformation = ({ childText, button, data, search, query }) => {
+const UserInformation = ({ childText, button, data, query }) => {
 	// console.log(data, '>>> user information');
 	const [notFollow, setNotFollow] = useState(button);
 	const [
@@ -40,7 +40,7 @@ const UserInformation = ({ childText, button, data, search, query }) => {
 			const id = data?._id;
 			const response = await follow({ variables: { userId: id } });
 			setNotFollow(false);
-			// console.log(response, '>>> response follow');
+			console.log(response, '>>> response follow');
 		} catch (error) {
 			console.log(error);
 		}
