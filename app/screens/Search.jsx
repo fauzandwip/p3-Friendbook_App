@@ -52,7 +52,7 @@ const GET_USER_BY_ID = gql`
 `;
 
 const Search = () => {
-	const [search, setSearch] = useState('jack1');
+	const [search, setSearch] = useState('');
 	const { data, loading, error } = useQuery(GET_USER_BY_NAME_USERNAME, {
 		variables: {
 			name: search,

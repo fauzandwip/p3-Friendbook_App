@@ -26,14 +26,7 @@ const CreateFormPost = ({ query }) => {
 	const [content, setContent] = useState('');
 	const [tagInput, setTagInput] = useState('');
 	const tagInputRef = useRef(null);
-	const [tags, setTags] = useState([
-		'tailwindcss',
-		// 'react',
-		// 'jsx',
-		// 'ios',
-		// 'android',
-		// 'react-native',
-	]);
+	const [tags, setTags] = useState(['tailwindcss', 'react-native']);
 
 	const addTag = () => {
 		// console.log(e.nativeEvent);
