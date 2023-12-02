@@ -16,7 +16,8 @@ import Home from './screens/Home';
 import Profile from './screens/Profile';
 import { useState } from 'react';
 import SearchButton from './components/SearchButton';
-import CreateFormPost from './components/CreatePostForm';
+import CreateFormPost from './screens/CreatePostForm';
+import Search from './screens/Search';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -85,6 +86,14 @@ export default function App() {
 								<Stack.Screen
 									name="CreatePost"
 									component={CreateFormPost}
+									options={{
+										headerRight: () => <View></View>,
+										headerShadowVisible: true,
+									}}
+								/>
+								<Stack.Screen
+									name="Search"
+									component={Search}
 									options={{
 										headerRight: () => <View></View>,
 										headerShadowVisible: true,

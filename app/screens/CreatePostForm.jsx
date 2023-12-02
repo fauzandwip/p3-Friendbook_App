@@ -1,5 +1,5 @@
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
-import UserInformation from './UserInformation';
+import UserInformation from '../components/UserInformation';
 import { useEffect, useRef, useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 

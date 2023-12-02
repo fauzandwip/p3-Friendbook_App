@@ -4,8 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 
 const SearchButton = () => {
 	const { navigate } = useNavigation();
+
 	return (
-		<TouchableOpacity onPress={() => navigate('DetailPost')}>
+		<TouchableOpacity onPress={() => navigate('Search')}>
 			<Icon name="search" size={24} />
 		</TouchableOpacity>
 	);

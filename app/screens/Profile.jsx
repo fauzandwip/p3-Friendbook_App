@@ -13,7 +13,7 @@ const Profile = () => {
 					gap: 5,
 					alignItems: 'center',
 					justifyContent: 'center',
-					paddingVertical: 50,
+					paddingVertical: 30,
 					// backgroundColor: 'cyan',
 				}}
 			>
@@ -85,7 +85,7 @@ const Profile = () => {
 				</View>
 
 				{/* list of user */}
-				<ScrollView style={{ width: '100%', marginTop: 20 }}>
+				<ScrollView style={{ width: '100%', marginTop: 10 }}>
 					<View
 						style={{
 							paddingVertical: 20,
