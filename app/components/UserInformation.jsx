@@ -1,6 +1,6 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
-const UserInformation = ({ childText, button }) => {
+const UserInformation = ({ childText, button, data }) => {
 	return (
 		<View
 			style={{
@@ -28,9 +28,11 @@ const UserInformation = ({ childText, button }) => {
 					}}
 				/>
 				<View style={{ flex: 1 }}>
-					<Text style={{ fontSize: 18, fontWeight: 'bold' }}>Will Turner</Text>
+					<Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+						{data?.user?.name}
+					</Text>
 					<Text style={{ fontSize: 14, display: childText ? 'flex' : 'none' }}>
-						@willturner
+						@{data?.user?.username}
 					</Text>
 				</View>
 			</View>

@@ -1,8 +1,45 @@
-import { Image, ScrollView, Text, View } from 'react-native';
+import {
+	FlatList,
+	Image,
+	ScrollView,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import styles from '../styles';
 import UserInformation from '../components/UserInformation';
+import { gql, useQuery } from '@apollo/client';
+import { useState } from 'react';
+
+const GET_USER_BY_ID = gql`
+	query User {
+		user {
+			_id
+			email
+			name
+			username
+			following {
+				_id
+				user {
+					name
+					username
+				}
+			}
+			followers {
+				_id
+				user {
+					name
+					username
+				}
+			}
+		}
+	}
+`;
 
 const Profile = () => {
+	const { data, loading, error } = useQuery(GET_USER_BY_ID);
+	const [isFollowers, setIsFollowers] = useState(true);
+
 	return (
 		<View
 			style={{ ...styles.container, justifyContent: 'center', padding: 20 }}
@@ -26,8 +63,10 @@ const Profile = () => {
 						marginBottom: 10,
 					}}
 				/>
-				<Text style={{ fontSize: 30, fontWeight: 'bold' }}>Jack Sparrow</Text>
-				<Text style={{ fontWeight: '500' }}>@jack</Text>
+				<Text style={{ fontSize: 30, fontWeight: 'bold' }}>
+					{data?.user?.name}
+				</Text>
+				<Text style={{ fontWeight: '500' }}>@{data?.user?.username}</Text>
 			</View>
 
 			{/* following and followers */}
@@ -38,64 +77,68 @@ const Profile = () => {
 						justifyContent: 'space-around',
 					}}
 				>
-					<View
+					<TouchableOpacity
 						style={{
+							borderColor: isFollowers ? '#1877f2' : 'lightgray',
+							backgroundColor: isFollowers ? '#1877f2' : 'white',
 							paddingVertical: 10,
 							flex: 1,
 							borderWidth: 1,
 							borderRightWidth: 0,
-							borderColor: 'lightgray',
 							borderTopStartRadius: 10,
 							borderBottomStartRadius: 10,
 						}}
+						onPress={() => setIsFollowers(true)}
 					>
 						<Text
 							style={{
 								fontSize: 16,
 								fontWeight: 'bold',
 								textAlign: 'center',
-								color: 'gray',
+								color: isFollowers ? 'white' : 'gray',
 							}}
 						>
 							Followers
 						</Text>
-					</View>
-					<View
+					</TouchableOpacity>
+					<TouchableOpacity
 						style={{
+							borderColor: !isFollowers ? '#1877f2' : 'lightgray',
+							backgroundColor: !isFollowers ? '#1877f2' : 'white',
 							paddingVertical: 10,
-							backgroundColor: '#1877f2',
 							flex: 1,
 							borderWidth: 1,
-							borderColor: '#1877f2',
 							borderTopEndRadius: 10,
 							borderBottomRightRadius: 10,
 						}}
+						onPress={() => setIsFollowers(false)}
 					>
 						<Text
 							style={{
 								fontSize: 16,
 								fontWeight: 'bold',
 								textAlign: 'center',
-								color: 'white',
+								color: !isFollowers ? 'white' : 'gray',
 							}}
 						>
-							Followings
+							Following
 						</Text>
-					</View>
+					</TouchableOpacity>
 				</View>
 
 				{/* list of user */}
-				<ScrollView style={{ width: '100%', marginTop: 10 }}>
-					<View
-						style={{
-							paddingVertical: 20,
-							gap: 20,
-						}}
-					>
-						<UserInformation childText={true} />
-						<UserInformation childText={true} />
+				{data?.user && (
+					<View style={{ flex: 1, marginTop: 30 }}>
+						<FlatList
+							data={isFollowers ? data?.user.followers : data?.user.following}
+							renderItem={({ item }) => (
+								<UserInformation data={item} childText={true} />
+							)}
+							keyExtractor={(item) => item._id}
+							ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+						/>
 					</View>
-				</ScrollView>
+				)}
 			</View>
 		</View>
 	);

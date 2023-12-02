@@ -70,27 +70,14 @@ const DetailPost = ({ route }) => {
 		>
 			<ScrollView style={{ flex: 1 }}>
 				<Post data={data?.post} />
-				{/* {data && (
-					<FlatList
-						data={data?.post}
-						renderItem={({ item }) => (
-							<Comment data={item} isTouchable={true} />
-						)}
-						keyExtractor={(item) => item.createdAt}
-						ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-					/>
-				)} */}
 				{/* COMMENTS */}
 				{data?.post &&
 					data?.post.comments.map((data, index) => {
 						return <Comment key={index} data={data} />;
 					})}
-				{/* <View style={{ backgroundColor: 'white' }}>
-					<Comment />
-					<Comment />
-					<Comment />
-				</View> */}
 			</ScrollView>
+
+			{/* ADD COMMENT */}
 			<View
 				style={{
 					flexDirection: 'row',
