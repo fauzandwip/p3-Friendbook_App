@@ -1,9 +1,43 @@
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import styles from '../styles';
 import Input from '../components/Input';
+import { gql, useMutation } from '@apollo/client';
+import { useContext, useState } from 'react';
+import { LoginContext } from '../context/LoginContext';
 
-const Login = ({ navigation, route }) => {
-	console.log(route);
+const LOGIN = gql`
+	mutation Login($email: String!, $password: String!) {
+		login(email: $email, password: $password) {
+			access_token
+		}
+	}
+`;
+
+const Login = ({ navigation }) => {
+	const { loginAction } = useContext(LoginContext);
+	const [userInput, setUserInput] = useState({
+		email: 'jack@gmail.com',
+		password: '12345',
+	});
+	const [login, { data, loading, error }] = useMutation(LOGIN);
+
+	const onChangeText = (text, key) => {
+		setUserInput((prev) => ({ ...prev, [key]: text }));
+	};
+
+	const handleOnLogin = async () => {
+		try {
+			if (loading) return;
+			const response = await login({
+				variables: { email: userInput.email, password: userInput.password },
+			});
+			// console.log(response.data.login.access_token, 'response');
+			await loginAction('access_token', response.data.login.access_token);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<View style={{ ...styles.container }}>
 			<View
@@ -25,8 +59,17 @@ const Login = ({ navigation, route }) => {
 					friendbook
 				</Text>
 
-				<Input placeholder={'email'}></Input>
-				<Input placeholder={'password'} secure={true}></Input>
+				<Input
+					placeholder={'email'}
+					value={userInput.email}
+					onChangeText={(text) => onChangeText(text, 'email')}
+				/>
+				<Input
+					placeholder={'password'}
+					secure={true}
+					value={userInput.password}
+					onChangeText={(text) => onChangeText(text, 'password')}
+				/>
 				<TouchableOpacity
 					style={{
 						marginTop: 30,
@@ -36,10 +79,7 @@ const Login = ({ navigation, route }) => {
 						padding: 10,
 						borderRadius: 20,
 					}}
-					onPress={() => {
-						console.log(route.params.isLogin);
-						route.params.setIsLogin(true);
-					}}
+					onPress={handleOnLogin}
 				>
 					<Text style={{ color: 'white', textAlign: 'center', fontSize: 18 }}>
 						Login

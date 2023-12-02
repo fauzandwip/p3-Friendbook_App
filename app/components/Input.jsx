@@ -1,6 +1,6 @@
 import { TextInput } from 'react-native';
 
-const Input = ({ placeholder, secure = false }) => {
+const Input = ({ placeholder, secure = false, value, onChangeText }) => {
 	return (
 		<TextInput
 			style={{
@@ -10,8 +10,10 @@ const Input = ({ placeholder, secure = false }) => {
 				paddingHorizontal: 20,
 				borderRadius: 10,
 			}}
+			value={value}
 			placeholder={placeholder}
 			secureTextEntry={secure}
+			onChangeText={onChangeText}
 		/>
 	);
 };
