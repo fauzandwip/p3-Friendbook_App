@@ -43,6 +43,7 @@ const postTypeDefs = `#graphql
     likes: [LikeDetail]
     createdAt: Date
     updatedAt: Date
+    user: User
   }
 
   type CommentDetail {
@@ -91,12 +92,13 @@ const postResolvers = {
 				await ctx.authentication();
 				const postsCache = await redis.get('post:all');
 
-				if (postsCache) {
-					console.log('from redis');
-					return JSON.parse(postsCache);
-				}
+				// if (postsCache) {
+				// 	console.log('from redis');
+				// 	return JSON.parse(postsCache);
+				// }
 
 				const posts = await Post.getAllPost();
+				console.log(posts);
 				await redis.set('post:all', JSON.stringify(posts));
 				console.log('from mongodb');
 

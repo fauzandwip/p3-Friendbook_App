@@ -4,7 +4,7 @@ const PostContent = ({ data }) => {
 	return (
 		<View>
 			<Text style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
-				{data.content}
+				{data?.content}
 			</Text>
 			<Image
 				style={{

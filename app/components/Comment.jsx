@@ -1,6 +1,7 @@
 import { Image, Text, View } from 'react-native';
 
-const Comment = () => {
+const Comment = ({ data }) => {
+	console.log(data, '>>> comment');
 	return (
 		<View
 			style={{
@@ -30,15 +31,18 @@ const Comment = () => {
 				/>
 				<View
 					style={{
-						flex: 1,
+						// flex: 1,
 						backgroundColor: 'lightgray',
-						padding: 10,
+						paddingVertical: 10,
+						paddingHorizontal: 15,
 						borderRadius: 20,
 						gap: 5,
 					}}
 				>
-					<Text style={{ fontSize: 18, fontWeight: 'bold' }}>Will Turner</Text>
-					<Text>@willturner@willturner@willturner @willturner @willturner</Text>
+					<Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+						{data?.user?.username}
+					</Text>
+					<Text>{data?.content}</Text>
 				</View>
 			</View>
 		</View>

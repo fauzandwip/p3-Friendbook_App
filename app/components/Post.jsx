@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 const Post = ({ isTouchable, data }) => {
 	const navigation = useNavigation();
 
-	// console.log(data, '>>> post');
+	console.log(data, '>>> post');
 	return (
 		<View
 			style={{
@@ -16,7 +16,13 @@ const Post = ({ isTouchable, data }) => {
 			}}
 		>
 			{isTouchable ? (
-				<TouchableOpacity onPress={() => navigation.navigate('DetailPost')}>
+				<TouchableOpacity
+					onPress={() =>
+						navigation.navigate('DetailPost', {
+							id: data._id,
+						})
+					}
+				>
 					<PostHeader data={data} />
 					<PostContent data={data} />
 				</TouchableOpacity>

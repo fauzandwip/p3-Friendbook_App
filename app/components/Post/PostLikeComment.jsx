@@ -17,7 +17,7 @@ const IconFooterPost = ({ name, text }) => {
 	);
 };
 
-const PostLikeComment = () => {
+const PostLikeComment = ({ data }) => {
 	return (
 		<View style={{ marginHorizontal: 10 }}>
 			{/* likes and comments information */}
@@ -32,27 +32,31 @@ const PostLikeComment = () => {
 				}}
 			>
 				{/* left */}
-				<View
-					style={{
-						flexDirection: 'row',
-						alignItems: 'center',
-						gap: 7,
-					}}
-				>
+				{data?.likes.length ? (
 					<View
 						style={{
-							backgroundColor: '#1877f2',
-							padding: 5,
-							borderRadius: 15,
+							flexDirection: 'row',
+							alignItems: 'center',
+							gap: 7,
 						}}
 					>
-						<Icon name="thumbs-up" size={12} color={'white'} />
+						<View
+							style={{
+								backgroundColor: '#1877f2',
+								padding: 5,
+								borderRadius: 15,
+							}}
+						>
+							<Icon name="thumbs-up" size={12} color={'white'} />
+						</View>
+						<Text style={{ color: 'gray' }}>{data?.likes.length} likes</Text>
 					</View>
-					<Text style={{ color: 'gray' }}>11 likes</Text>
-				</View>
+				) : (
+					<View />
+				)}
 
 				{/* right */}
-				<Text style={{ color: 'gray' }}>27 comments</Text>
+				<Text style={{ color: 'gray' }}>{data?.comments.length} comments</Text>
 			</View>
 
 			{/* like and comment button */}

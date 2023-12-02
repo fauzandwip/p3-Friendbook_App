@@ -1,9 +1,66 @@
-import { Image, ScrollView, Text, TextInput, View } from 'react-native';
+import {
+	FlatList,
+	Image,
+	ScrollView,
+	Text,
+	TextInput,
+	View,
+} from 'react-native';
 import Post from '../components/Post';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Comment from '../components/Comment';
+import { gql, useQuery } from '@apollo/client';
 
-const DetailPost = () => {
+const GET_POST_BY_ID = gql`
+	query Post($postId: ID!) {
+		post(id: $postId) {
+			_id
+			content
+			tags
+			imgUrl
+			authorId
+			comments {
+				content
+				authorId
+				createdAt
+				updatedAt
+				user {
+					name
+					username
+				}
+			}
+			likes {
+				authorId
+				createdAt
+				updatedAt
+				user {
+					name
+					username
+				}
+			}
+			createdAt
+			updatedAt
+			user {
+				_id
+				name
+				username
+				email
+			}
+		}
+	}
+`;
+
+const DetailPost = ({ route }) => {
+	const { data, loading, error } = useQuery(GET_POST_BY_ID, {
+		variables: {
+			postId: route.params.id,
+		},
+	});
+
+	console.log(data, '>>> post detail');
+	console.log(route.params.id, '>>> id');
+	console.log(JSON.stringify(error, null, 2));
+
 	return (
 		<View
 			style={{
@@ -12,13 +69,27 @@ const DetailPost = () => {
 			}}
 		>
 			<ScrollView style={{ flex: 1 }}>
-				<Post></Post>
+				<Post data={data?.post} />
+				{/* {data && (
+					<FlatList
+						data={data?.post}
+						renderItem={({ item }) => (
+							<Comment data={item} isTouchable={true} />
+						)}
+						keyExtractor={(item) => item.createdAt}
+						ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+					/>
+				)} */}
 				{/* COMMENTS */}
-				<View style={{ backgroundColor: 'white' }}>
+				{data?.post &&
+					data?.post.comments.map((data, index) => {
+						return <Comment key={index} data={data} />;
+					})}
+				{/* <View style={{ backgroundColor: 'white' }}>
 					<Comment />
 					<Comment />
 					<Comment />
-				</View>
+				</View> */}
 			</ScrollView>
 			<View
 				style={{
