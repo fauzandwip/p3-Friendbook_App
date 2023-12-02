@@ -1,23 +1,73 @@
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { gql, useMutation } from '@apollo/client';
 
-const IconFooterPost = ({ name, text }) => {
+const IconFooterPost = ({ name, text, onPress }) => {
 	return (
-		<View
+		<TouchableOpacity
 			style={{
 				padding: 5,
 				flexDirection: 'row',
 				alignItems: 'center',
 				gap: 8,
 			}}
+			onPress={onPress}
 		>
 			<Icon name={name} size={24} color={'gray'} />
 			<Text style={{ color: 'gray', fontWeight: 'bold' }}>{text}</Text>
-		</View>
+		</TouchableOpacity>
 	);
 };
 
+const LIKE = gql`
+	mutation AddLike($postId: ID!) {
+		addLike(postId: $postId)
+	}
+`;
+
+const GET_POSTS = gql`
+	query Posts {
+		posts {
+			_id
+			content
+			tags
+			imgUrl
+			authorId
+			comments {
+				content
+				authorId
+				createdAt
+			}
+			likes {
+				authorId
+			}
+			createdAt
+			updatedAt
+			user {
+				_id
+				name
+				username
+				email
+			}
+		}
+	}
+`;
+
 const PostLikeComment = ({ data }) => {
+	const [like, { data: likeData, loading, error }] = useMutation(LIKE, {
+		refetchQueries: [GET_POSTS, 'posts'],
+	});
+
+	// console.log(data, '>>> post like');
+	const handleOnLike = async () => {
+		try {
+			const response = await like({ variables: { postId: data._id } });
+			console.log(response, '>>> response like');
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<View style={{ marginHorizontal: 10 }}>
 			{/* likes and comments information */}
@@ -68,7 +118,11 @@ const PostLikeComment = ({ data }) => {
 					padding: 8,
 				}}
 			>
-				<IconFooterPost name={'thumbs-o-up'} text={'Like'} />
+				<IconFooterPost
+					name={'thumbs-o-up'}
+					text={'Like'}
+					onPress={handleOnLike}
+				/>
 				<IconFooterPost name={'comment-o'} text={'Comment'} />
 			</View>
 		</View>

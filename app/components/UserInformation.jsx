@@ -1,5 +1,6 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { gql, useMutation } from '@apollo/client';
+import { useState } from 'react';
 
 const FOLLOW = gql`
 	mutation Follow($userId: ID) {
@@ -26,23 +27,26 @@ const GET_USER_BY_NAME_USERNAME = gql`
 
 const UserInformation = ({ childText, button, data, search, query }) => {
 	// console.log(data, '>>> user information');
+	const [notFollow, setNotFollow] = useState(button);
 	const [
 		follow,
 		{ data: followData, loading: followLoading, error: followError },
 	] = useMutation(FOLLOW, {
-		refetchQueries: [GET_USER_BY_NAME_USERNAME, 'SearchUserByName'],
+		refetchQueries: [GET_USER_BY_NAME_USERNAME, 'usersByName'],
 	});
 
 	const handleOnFollow = async () => {
 		try {
 			const id = data?._id;
 			const response = await follow({ variables: { userId: id } });
-			console.log(response, '>>> response follow');
+			setNotFollow(false);
+			// console.log(response, '>>> response follow');
 		} catch (error) {
 			console.log(error);
 		}
 	};
 	// console.log(followData, '>>> data follow');
+	// console.log(notFollow, 'isFollow');
 
 	return (
 		<View
@@ -78,7 +82,7 @@ const UserInformation = ({ childText, button, data, search, query }) => {
 				</View>
 			</View>
 
-			{button && (
+			{notFollow && (
 				<TouchableOpacity
 					style={{
 						backgroundColor: 'lightgray',
