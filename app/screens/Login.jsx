@@ -15,7 +15,7 @@ const LOGIN = gql`
 `;
 
 const Login = ({ navigation }) => {
-	const { loginAction } = useContext(LoginContext);
+	const { loginAction, refetchUser } = useContext(LoginContext);
 	const [userInput, setUserInput] = useState({
 		email: 'jack@gmail.com',
 		password: '12345',
@@ -34,6 +34,7 @@ const Login = ({ navigation }) => {
 			});
 			// console.log(response.data.login.access_token, 'response');
 			await loginAction('access_token', response.data.login.access_token);
+			await refetchUser();
 		} catch (error) {
 			console.log(error);
 		}
@@ -66,12 +67,14 @@ const Login = ({ navigation }) => {
 					placeholder={'email'}
 					value={userInput.email}
 					onChangeText={(text) => onChangeText(text, 'email')}
+					name={'envelope'}
 				/>
 				<Input
 					placeholder={'password'}
 					secure={true}
 					value={userInput.password}
 					onChangeText={(text) => onChangeText(text, 'password')}
+					name={'lock'}
 				/>
 				{error && <Text style={{ color: 'red' }}>{error?.message}</Text>}
 				<TouchableOpacity

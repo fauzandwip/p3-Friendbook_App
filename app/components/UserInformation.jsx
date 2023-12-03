@@ -68,9 +68,13 @@ const UserInformation = ({ childText, button, data, query }) => {
 				/>
 				<View style={{ flex: 1, gap: 3 }}>
 					<Text style={{ fontSize: 18, fontWeight: 'bold' }}>{data?.name}</Text>
-					<Text style={{ fontSize: 14, display: childText ? 'flex' : 'none' }}>
-						@{data?.username}
-					</Text>
+					{data?.username && (
+						<Text
+							style={{ fontSize: 14, display: childText ? 'flex' : 'none' }}
+						>
+							@{data?.username}
+						</Text>
+					)}
 				</View>
 			</View>
 
