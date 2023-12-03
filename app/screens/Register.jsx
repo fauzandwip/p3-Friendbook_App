@@ -1,4 +1,4 @@
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import styles from '../styles';
 import Input from '../components/Input';
 import { useState } from 'react';
@@ -92,6 +92,8 @@ const Register = ({ navigation }) => {
 					value={userInput.password}
 					onChangeText={(text) => onChangeText(text, 'password')}
 				/>
+				{error && <Text style={{ color: 'red' }}>{error?.message}</Text>}
+
 				<TouchableOpacity
 					style={{
 						marginTop: 30,

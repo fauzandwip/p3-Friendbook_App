@@ -2,8 +2,10 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { gql, useMutation } from '@apollo/client';
 import { useNavigation } from '@react-navigation/native';
+import { useContext } from 'react';
+import { LoginContext } from '../../context/LoginContext';
 
-const IconFooterPost = ({ name, text, onPress }) => {
+const IconFooterPost = ({ name, text, onPress, isLiked }) => {
 	return (
 		<TouchableOpacity
 			style={{
@@ -11,11 +13,21 @@ const IconFooterPost = ({ name, text, onPress }) => {
 				flexDirection: 'row',
 				alignItems: 'center',
 				gap: 8,
+				flex: 1,
+				justifyContent: 'center',
+				// backgroundColor: 'cyan',
 			}}
 			onPress={onPress}
 		>
-			<Icon name={name} size={24} color={'gray'} />
-			<Text style={{ color: 'gray', fontWeight: 'bold' }}>{text}</Text>
+			<Icon name={name} size={24} color={isLiked ? '#1877f2' : 'gray'} />
+			<Text
+				style={{
+					color: isLiked ? '#1877f2' : 'gray',
+					fontWeight: 'bold',
+				}}
+			>
+				{text}
+			</Text>
 		</TouchableOpacity>
 	);
 };
@@ -56,9 +68,15 @@ const GET_POSTS = gql`
 
 const PostLikeComment = ({ data }) => {
 	const { navigate } = useNavigation();
-	const [like, { data: likeData, loading, error }] = useMutation(LIKE, {
+	const { currentUser } = useContext(LoginContext);
+	const [like] = useMutation(LIKE, {
 		refetchQueries: [GET_POSTS, 'Posts'],
 	});
+
+	const isLiked = (arr) => {
+		const index = arr?.find((data) => data?.authorId === currentUser?._id);
+		return index ? true : false;
+	};
 
 	// console.log(data, '>>> post like');
 	const handleOnLike = async () => {
@@ -108,11 +126,21 @@ const PostLikeComment = ({ data }) => {
 				)}
 
 				{/* right */}
-				<Text style={{ color: 'gray' }}>{data?.comments.length} comments</Text>
+				<TouchableOpacity
+					onPress={() =>
+						navigate('DetailPost', {
+							id: data._id,
+						})
+					}
+				>
+					<Text style={{ color: 'gray' }}>
+						{data?.comments.length} comments
+					</Text>
+				</TouchableOpacity>
 			</View>
 
 			{/* like and comment button */}
-			<TouchableOpacity
+			<View
 				style={{
 					flexDirection: 'row',
 					justifyContent: 'space-around',
@@ -121,9 +149,10 @@ const PostLikeComment = ({ data }) => {
 				}}
 			>
 				<IconFooterPost
-					name={'thumbs-o-up'}
+					name={isLiked(data?.likes) ? 'thumbs-up' : 'thumbs-o-up'}
 					text={'Like'}
 					onPress={handleOnLike}
+					isLiked={isLiked(data?.likes)}
 				/>
 				<IconFooterPost
 					name={'comment-o'}
@@ -134,7 +163,7 @@ const PostLikeComment = ({ data }) => {
 						})
 					}
 				/>
-			</TouchableOpacity>
+			</View>
 		</View>
 	);
 };

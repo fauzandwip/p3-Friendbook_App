@@ -1,12 +1,4 @@
-import {
-	FlatList,
-	Image,
-	ScrollView,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
 import Post from '../components/Post';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Comment from '../components/Comment';
@@ -58,7 +50,7 @@ const ADD_COMMENT = gql`
 	}
 `;
 
-const DetailPost = ({ route, refetchPosts }) => {
+const DetailPost = ({ route }) => {
 	const [comment, setComment] = useState('');
 	const { data, loading, error } = useQuery(GET_POST_BY_ID, {
 		variables: {
@@ -67,7 +59,6 @@ const DetailPost = ({ route, refetchPosts }) => {
 	});
 	const [addComment, { data: commentData }] = useMutation(ADD_COMMENT, {
 		refetchQueries: [GET_POST_BY_ID, 'Post'],
-		onCompleted: (data) => refetchPosts,
 	});
 
 	// console.log(data, '>>> post detail');
@@ -131,7 +122,12 @@ const DetailPost = ({ route, refetchPosts }) => {
 					value={comment}
 					onChangeText={(text) => setComment(text)}
 				/>
-				<TouchableOpacity onPress={handleOnAddComment}>
+				<TouchableOpacity
+					onPress={handleOnAddComment}
+					style={{
+						padding: 10,
+					}}
+				>
 					<Icon name="send" size={20} color={comment ? '#1877f2' : 'gray'} />
 				</TouchableOpacity>
 			</View>
