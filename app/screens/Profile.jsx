@@ -1,15 +1,11 @@
-import {
-	FlatList,
-	Image,
-	ScrollView,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import styles from '../styles';
 import UserInformation from '../components/UserInformation';
 import { gql, useQuery } from '@apollo/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useIsFocused } from '@react-navigation/native';
+import Error from '../components/Error';
+import Loading from '../components/Loading';
 
 const GET_USER_BY_ID = gql`
 	query User {
@@ -37,8 +33,17 @@ const GET_USER_BY_ID = gql`
 `;
 
 const Profile = () => {
-	const { data, loading, error } = useQuery(GET_USER_BY_ID);
+	const isFocused = useIsFocused();
+	const { data, loading, error, refetch } = useQuery(GET_USER_BY_ID);
 	const [isFollowers, setIsFollowers] = useState(true);
+
+	useEffect(() => {
+		refetch();
+		console.log('refetch profile screen');
+	}, [isFocused]);
+
+	if (loading) return <Loading />;
+	if (error) return <Error error={error} />;
 
 	return (
 		<View
@@ -47,10 +52,9 @@ const Profile = () => {
 			<View
 				style={{
 					flex: 1,
-					gap: 5,
 					alignItems: 'center',
 					justifyContent: 'center',
-					paddingVertical: 30,
+					paddingVertical: 40,
 					// backgroundColor: 'cyan',
 				}}
 			>
@@ -66,7 +70,9 @@ const Profile = () => {
 				<Text style={{ fontSize: 30, fontWeight: 'bold' }}>
 					{data?.user?.name}
 				</Text>
-				<Text style={{ fontWeight: '500' }}>@{data?.user?.username}</Text>
+				{data?.user.username && (
+					<Text style={{ fontWeight: '500' }}>@{data?.user?.username}</Text>
+				)}
 			</View>
 
 			{/* following and followers */}

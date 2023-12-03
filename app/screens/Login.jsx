@@ -4,6 +4,7 @@ import Input from '../components/Input';
 import { gql, useMutation } from '@apollo/client';
 import { useContext, useState } from 'react';
 import { LoginContext } from '../context/LoginContext';
+import Loading from '../components/Loading';
 
 const LOGIN = gql`
 	mutation Login($email: String!, $password: String!) {
@@ -38,6 +39,8 @@ const Login = ({ navigation }) => {
 		}
 	};
 
+	if (loading) return <Loading />;
+
 	return (
 		<View style={{ ...styles.container }}>
 			<View
@@ -70,6 +73,7 @@ const Login = ({ navigation }) => {
 					value={userInput.password}
 					onChangeText={(text) => onChangeText(text, 'password')}
 				/>
+				{error && <Text style={{ color: 'red' }}>{error?.message}</Text>}
 				<TouchableOpacity
 					style={{
 						marginTop: 30,

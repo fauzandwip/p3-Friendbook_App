@@ -21,7 +21,7 @@ const PostHeader = ({ data }) => {
 			/>
 			<View style={{ flex: 1, gap: 2 }}>
 				<Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-					{data?.user?.username ?? data?.user?.name}
+					{data?.user?.name ?? data?.user?.username}
 				</Text>
 				<Text style={{ fontSize: 12, color: 'gray', marginLeft: 2 }}>27m</Text>
 			</View>
