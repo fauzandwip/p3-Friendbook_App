@@ -1,9 +1,10 @@
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import UserInformation from '../components/UserInformation';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { gql, useMutation } from '@apollo/client';
+import { LoginContext } from '../context/LoginContext';
 
 const ADD_POST = gql`
 	mutation AddPost($post: NewPost) {
@@ -19,6 +20,8 @@ const ADD_POST = gql`
 
 const CreateFormPost = ({ query }) => {
 	const { navigate } = useNavigation();
+	const { currentUser } = useContext(LoginContext);
+
 	const [addPost, { data, loading, error }] = useMutation(ADD_POST, {
 		refetchQueries: [query, 'Posts'],
 	});
@@ -80,7 +83,7 @@ const CreateFormPost = ({ query }) => {
 				backgroundColor: 'white',
 			}}
 		>
-			<UserInformation />
+			<UserInformation data={currentUser} childText={true} />
 			<TextInput
 				style={{
 					// width: '100%',

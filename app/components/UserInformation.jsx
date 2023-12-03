@@ -14,19 +14,7 @@ const FOLLOW = gql`
 	}
 `;
 
-// const GET_USER_BY_NAME_USERNAME = gql`
-// 	query SearchUserByName($name: String!) {
-// 		usersByName(name: $name) {
-// 			_id
-// 			name
-// 			username
-// 			email
-// 		}
-// 	}
-// `;
-
 const UserInformation = ({ childText, button, data, query }) => {
-	// console.log(data, '>>> user information');
 	const [notFollow, setNotFollow] = useState(button);
 	const [
 		follow,
@@ -35,11 +23,15 @@ const UserInformation = ({ childText, button, data, query }) => {
 		refetchQueries: [query, 'SearchUserByName'],
 	});
 
+	// console.log(data, '>>> user information');
+
 	const handleOnFollow = async () => {
 		try {
+			console.log('follow trigerr');
 			const id = data?._id;
 			const response = await follow({ variables: { userId: id } });
 			setNotFollow(false);
+			console.log('refetch search');
 			console.log(response, '>>> response follow');
 		} catch (error) {
 			console.log(error);

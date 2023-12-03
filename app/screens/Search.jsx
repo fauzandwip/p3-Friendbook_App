@@ -1,15 +1,9 @@
-import {
-	FlatList,
-	Image,
-	ScrollView,
-	Text,
-	TextInput,
-	View,
-} from 'react-native';
+import { FlatList, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import UserInformation from '../components/UserInformation';
 import { gql, useQuery, useMutation } from '@apollo/client';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { LoginContext } from '../context/LoginContext';
 
 const GET_USER_BY_NAME_USERNAME = gql`
 	query SearchUserByName($name: String!) {
@@ -52,8 +46,10 @@ const GET_USER_BY_ID = gql`
 `;
 
 const Search = () => {
+	const { currentUser } = useContext(LoginContext);
+
 	const [search, setSearch] = useState('');
-	const { data, loading, error } = useQuery(GET_USER_BY_NAME_USERNAME, {
+	const { data } = useQuery(GET_USER_BY_NAME_USERNAME, {
 		variables: {
 			name: search,
 		},
@@ -65,8 +61,6 @@ const Search = () => {
 		error: errorProfile,
 	} = useQuery(GET_USER_BY_ID);
 
-	// console.log(profile, '>>> profile');
-	// console.log(search, '>>> search input');
 	// console.log(data, '>>> search');
 	// console.log(JSON.stringify(errorProfile, null, 2), '>>> error search');
 
@@ -129,7 +123,9 @@ const Search = () => {
 					}}
 				>
 					<FlatList
-						data={data?.usersByName}
+						data={data?.usersByName.filter(
+							(obj) => obj._id !== currentUser?._id
+						)}
 						renderItem={({ item }) => (
 							<UserInformation
 								data={item}
