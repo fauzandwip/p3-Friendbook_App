@@ -154,7 +154,6 @@ const CreateFormPost = ({ query }) => {
 			<TextInput
 				multiline={true}
 				numberOfLines={10}
-				maxLength={40}
 				style={{
 					paddingVertical: 10,
 					paddingHorizontal: 20,
