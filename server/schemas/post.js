@@ -177,6 +177,7 @@ const postResolvers = {
 				);
 
 				if (matchedCount) {
+					await redis.del('post:all');
 					return 'Success to add comment';
 				}
 
@@ -208,6 +209,7 @@ const postResolvers = {
 				const { matchedCount } = await Post.addLike(postId, user.id);
 
 				if (matchedCount) {
+					await redis.del('post:all');
 					return 'Success to like post';
 				}
 
