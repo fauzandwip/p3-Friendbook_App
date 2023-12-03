@@ -18,6 +18,7 @@ const Input = ({ placeholder, secure = false, value, onChangeText, name }) => {
 		>
 			<Icon name={name} size={18} style={{ width: '10%' }} />
 			<TextInput
+				style={{ flex: 1 }}
 				value={value}
 				placeholder={placeholder}
 				secureTextEntry={secure}
