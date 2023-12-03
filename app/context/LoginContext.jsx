@@ -21,7 +21,7 @@ const GET_USER_BY_ID = gql`
 
 export const LoginContextProvider = ({ children }) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const { data: currentUser } = useQuery(GET_USER_BY_ID);
+	const { data: currentUser, refetch } = useQuery(GET_USER_BY_ID);
 
 	const loginAction = async (key, value) => {
 		try {
@@ -60,6 +60,7 @@ export const LoginContextProvider = ({ children }) => {
 				loginAction,
 				logoutAction,
 				currentUser: currentUser?.user,
+				refetchUser: refetch,
 			}}
 		>
 			{children}

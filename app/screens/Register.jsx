@@ -17,10 +17,10 @@ const REGISTER = gql`
 
 const Register = ({ navigation }) => {
 	const [userInput, setUserInput] = useState({
-		name: 'Test',
-		username: 'test',
-		email: 'test@gmail.com',
-		password: '12345',
+		name: '',
+		username: '',
+		email: '',
+		password: '',
 	});
 	const [register, { data, loading, error }] = useMutation(REGISTER);
 
@@ -75,22 +75,26 @@ const Register = ({ navigation }) => {
 					placeholder={'name'}
 					value={userInput.name}
 					onChangeText={(text) => onChangeText(text, 'name')}
+					name={'user'}
 				/>
 				<Input
 					placeholder={'username'}
 					value={userInput.username}
 					onChangeText={(text) => onChangeText(text, 'username')}
+					name={'user-circle-o'}
 				/>
 				<Input
 					placeholder={'email'}
 					value={userInput.email}
 					onChangeText={(text) => onChangeText(text, 'email')}
+					name={'envelope'}
 				/>
 				<Input
 					placeholder={'password'}
 					secure={true}
 					value={userInput.password}
 					onChangeText={(text) => onChangeText(text, 'password')}
+					name={'lock'}
 				/>
 				{error && <Text style={{ color: 'red' }}>{error?.message}</Text>}
 
