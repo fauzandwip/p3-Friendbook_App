@@ -1,19 +1,26 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=13040879&assignment_repo_type=AssignmentRepo)
+## Friendbook App
 
-# GC01
+#### Preview App - [Friendbook](https://www.youtube.com/watch?v=zhK3nX99L04&t=6s&ab_channel=FauzanDPrasetyo)
 
-## My Social Media App
+## About
 
-### Theme: Facebook
+Friendbook App adalah sebuah aplikasi facebook clone dengan client(mobile)-server.
 
-My Social Media App adalah sebuah aplikasi client(mobile)-server. Challenge ini juga merupakan salah satu aplikasi mobile pertama dan terakhir kamu, jadi kerjakan dengan baik sebagai bekal portofolio kamu. Pada challenge ini, kamu diminta untuk membuat aplikasi client(mobile)-server dengan detail sebagai berikut:
+## Tech Stack
 
-### Struktur Folder
+![ReactNative](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![GraphQL](https://img.shields.io/badge/GraphQl-E10098?style=for-the-badge&logo=graphql&logoColor=white)
+![Apollo_GraphQL](https://img.shields.io/badge/Apollo%20GraphQL-311C87?&style=for-the-badge&logo=Apollo%20GraphQL&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?&style=for-the-badge&logo=redis&logoColor=white)
+![Expo](https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white)
+
+## Struktur Folder
 
 - [x] server: untuk menyimpan aplikasi server GraphQL kamu
 - [x] app: untuk menyimpan aplikasi mobile React Native kamu
 
-### Fitur
+## Fitur
 
 - [x] Fitur Register
 - [x] Fitur Login
